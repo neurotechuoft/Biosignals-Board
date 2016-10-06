@@ -13,7 +13,7 @@ The goal of this porject is to create a biosignals-board capable of picking up E
 
 ## Project Plan
 ---
-We will be using the ~~ADS1299~~ NeuroSky brainwave [EEG: TGAM] chip to collect, amplify and digitally encode the signal. Using its onboard UART features, we will transmit the signal over bluetooth.
+We will be using the ~~ADS1299~~ NeuroSky brainwave [EEG: TGAM] chip to collect, amplify and digitally encode the signal. Using its onboard UART features, we will transmit the signal over bluetooth to a laptop.
 
 
 [EEG: TGAM]: http://www.seeedstudio.com/document/pdf/TGAM%20Datasheet.pdf
