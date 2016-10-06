@@ -7,7 +7,8 @@ The goal of this porject is to create a biosignals-board capable of picking up E
 ### NeurotechX Competition Specifications
 
 1. [Competition Website] (http://neurotechx.com/studentclubs.html#about "NeurotechX Competition")
-2. [Rules Breakdown] (http://neurotechuoft.github.io/Files/NeuroTechX-StudentClubCompetition-Validation.pdf "Rules")
+2. [Rules Breakdown] (http://neurotechuoft.github.io/Files/NeuroTechX-StudentClubCompetition-Validation.pdf "Rules")  
+
 ![alt text](./Resources/CompetitionRubric/DIY.png)
 
 ## Project Plan
