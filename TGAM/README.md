@@ -3,6 +3,7 @@
 ## Chip Specifications
 * [Data Sheet] (http://www.seeedstudio.com/document/pdf/TGAM%20Datasheet.pdf "TGAM")
 * [Secondary] (http://wearcam.org/ece516/neurosky_eeg_brainwave_chip_and_board_tgam1.pdf "morespecs")
+* [Communication Protocols] (http://developer.neurosky.com/docs/doku.php?id=thinkgear_communications_protocol "protocol")
 
 ## Neurosky Tutorials
 * http://developer.neurosky.com/docs/doku.php?id=app_notes_and_tutorials
