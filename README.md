@@ -18,9 +18,17 @@ We will be using the ~~ADS1299~~ NeuroSky brainwave [EEG: TGAM] chip to collect,
 [EEG: TGAM]: ./TGAM/
 
 
+## Project Progress
+* Created circuit schematic for interfacing TGAM chip with Arduino
+* Researched possible Bluetooth Low Energy chips for use
+* Researched TGAM commonications protocol
+* Soldered wire sockets to TGAM chip
+* Connecting TGAM circuit
+* Debugging TGAM + arduino pairing
+
 ## Future Tasks
-* Solder wire-sockets to TGAM chip
-* Acquire bread board for testing
+* ~~Solder wire-sockets to TGAM chip~~
+* ~~Acquire bread board for testing~~
 * Use electrodes(dry) to attach to TGAM
 * Interface with Arduino and set up UART connection
 * Determine TGAM framework to calculate voltage back
