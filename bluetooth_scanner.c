@@ -5,7 +5,7 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
-// gcc -o  bluetooth.c -lbluetooth
+// gcc -o bluetooth_scanner bluetooth_scanner.c -lbluetooth
 int main(int argc, char **argv)
 {
     inquiry_info *ii = NULL; // array of BLE devices+info found in scan
