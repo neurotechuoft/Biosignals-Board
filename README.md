@@ -2,33 +2,20 @@
 
 ## Overview
 
-The goal of this porject is to create a biosignals-board capable of picking up EEG from an individual. It will pick up the analog signal, amplify it, and convert it to a digital signal to be transfered to a computer. This signal can then be used to control external applications. The biosignals-board will be created to compete in the NeurotechX competition.
+The goal of this project is to build an EEG (electroencephalogram) signal acquisition pipeline for the "fixed challenge" portion of the NeurotechX Student competition in November 2017. The pipeline will consist of a biosignals board that is capable of picking up an analog EEG signal, perform analog to digital conversion and signal processing, and transmit the signal to a distant computer for real-time visualization and other applications.
 
 ### NeurotechX Competition Specifications
 
 1. [Competition Website] (http://neurotechx.com/studentclubs.html#about "NeurotechX Competition")
-2. [Rules Breakdown] (http://neurotechuoft.github.io/Files/NeuroTechX-StudentClubCompetition-Validation.pdf "Rules")  
 
-![alt text](./Resources/CompetitionRubric/DIY.png)
+![alt text](./Resources/CompetitionRequirements2017.JPG)
 
 ## Project Plan
-
-We will be using the ~~ADS1299~~ NeuroSky brainwave [EEG: TGAM] chip to collect, amplify and digitally encode the signal. Using its onboard UART features, we will transmit the signal over bluetooth to a laptop.
-
-[EEG: TGAM]: ./TGAM/
-
+We are planning to work on the project during the summer of 2017 with a targeted completion date of August 31, 2017, leaving two months for testing and polishing the final product. The project is being organized into three subsections: analog signal acquistion and amplification, analog to digital conversion, and data transmission/software, which will all be developed concurrently. For analog to digital conversion, we will be using the Texas Instruments [ADS1299 ADC chip](./ADS1299/) to convert the acquired EEG signal from analog to digital. 
 
 ## Project Progress
-* Created circuit schematic for interfacing TGAM chip with Arduino
-* Researched possible Bluetooth Low Energy chips for use
-* Researched TGAM commonications protocol
-* Soldered wire sockets to TGAM chip
-* Connecting TGAM circuit
-* Debugging TGAM + arduino pairing
+* Developed [high-level schematic](./MeetingNotes/schematic.jpg) of entire system
 
 ## Future Tasks
-* ~~Solder wire-sockets to TGAM chip~~
-* ~~Acquire bread board for testing~~
-* Use electrodes(dry) to attach to TGAM
-* Interface with Arduino and set up UART connection
-* Determine TGAM framework to calculate voltage back
+* Determine detailed project timeline
+* Conduct research into how ADS1299 works
