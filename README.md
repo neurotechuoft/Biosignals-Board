@@ -2,11 +2,11 @@
 
 ## Overview
 
-The goal of this project is to build an EEG (electroencephalogram) signal acquisition pipeline for the "fixed challenge" portion of the NeurotechX Student competition in November 2017. The pipeline will consist of a biosignals board that is capable of picking up an analog EEG signal, perform analog to digital conversion and signal processing, and transmit the signal to a distant computer for real-time visualization and other applications.
+The goal of this project is to build an EEG (electroencephalogram) signal acquisition pipeline for the "Fixed Challenge" portion of the NeurotechX Student competition taking place at the end of November 2017. The pipeline will consist of a biosignals board that is capable of picking up an analog EEG signal, perform analog to digital conversion and signal processing, and transmit the signal to a distant computer for real-time visualization and other applications.
 
 ### NeurotechX Competition Specifications
 
-1. [Competition Website] (http://neurotechx.com/studentclubs.html#about "NeurotechX Competition")
+1. [Competition Website] (https://neurotechx.github.io/studentclubs/competition/ "NeurotechX Competition")
 
 ![alt text](./Resources/CompetitionRequirements2017.JPG)
 
