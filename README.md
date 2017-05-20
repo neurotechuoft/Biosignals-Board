@@ -14,8 +14,9 @@ The goal of this project is to build an EEG (electroencephalogram) signal acquis
 We are planning to work on the project during the summer of 2017 with a targeted completion date of August 31, 2017, leaving two months for testing and polishing the final product. The project is being organized into three subsections: analog signal acquistion and amplification, analog to digital conversion, and data transmission/software, which will all be developed concurrently. For analog to digital conversion, we will be using the Texas Instruments [ADS1299 ADC chip](./ADS1299/) to convert the acquired EEG signal from analog to digital. 
 
 ## Project Progress
-* Developed [high-level schematic](./MeetingNotes/schematic.jpg) of entire system
+* Developed [high-level schematic]( ./2017/MeetingNotes/FixedProject.png) of entire system
 
 ## Future Tasks
 * Determine detailed project timeline
 * Conduct research into how ADS1299 works
+* Delete old files and leave only 2016 and 2017 folder
