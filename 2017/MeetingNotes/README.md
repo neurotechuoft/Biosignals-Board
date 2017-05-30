@@ -1,3 +1,3 @@
 # Meeting Times
-Wednesday: **6:00pm - 8:00pm**
-Saturday: **10:00am - 12:00pm**
+Tuesday: **7:00pm - 9:00pm**
+Sunday: **12:00pm - 3:00pm**
