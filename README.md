@@ -6,7 +6,7 @@ The goal of this project is to build an EEG (electroencephalogram) signal acquis
 
 ### NeurotechX Competition Specifications
 
-1. [Competition Website] (https://neurotechx.github.io/studentclubs/competition/ "NeurotechX Competition")
+1. [Competition Website](https://neurotechx.github.io/studentclubs/competition/ "NeurotechX Competition")
 
 ![rubric](./2017/Resources/CompetitionRequirements2017.JPG)
 
