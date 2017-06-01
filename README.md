@@ -15,7 +15,7 @@ We are planning to work on the project during the summer of 2017 with a targeted
 
 ## Project Progress
 * Developed high-level schematic of entire system
-![high-level schematic]( ./2017/MeetingNotes/FixedProject.png)
+![high-level schematic]( ./2017/Resources/FixedProject.png)
 
 ## Future Tasks
 * Follow [MeetingNotes](./2017/MeetingNotes) for updates
