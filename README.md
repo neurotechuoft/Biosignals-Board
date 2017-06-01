@@ -8,7 +8,7 @@ The goal of this project is to build an EEG (electroencephalogram) signal acquis
 
 1. [Competition Website] (https://neurotechx.github.io/studentclubs/competition/ "NeurotechX Competition")
 
-![rubric](./Resources/CompetitionRequirements2017.JPG)
+![rubric](./2017/Resources/CompetitionRequirements2017.JPG)
 
 ## Project Plan
 We are planning to work on the project during the summer of 2017 with a targeted completion date of August 31, 2017, leaving two months for testing and polishing the final product. The project is being organized into three subsections: analog signal acquistion and amplification, analog to digital conversion, and data transmission/software, which will all be developed concurrently. For analog to digital conversion, we will be using the Texas Instruments [ADS1299 ADC chip](./ADS1299/) to convert the acquired EEG signal.
