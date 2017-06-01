@@ -19,3 +19,6 @@ We are planning to work on the project during the summer of 2017 with a targeted
 
 ## Future Tasks
 * Follow [MeetingNotes](./2017/MeetingNotes) for updates
+
+## Excelent Resources
+* [EEG PocketGuide](./2017/Resources/iMotions_Guide_EEG_Pocket_2016.pdf)
