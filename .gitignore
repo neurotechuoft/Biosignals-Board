@@ -1,3 +1,11 @@
 # Jupyter Notebook #
 ###################
 .ipynb_checkpoints
+
+# ADS1299-Arduino Library Reference Files #
+###########################################
+Meeting-Sean(Electrodes:Diagrams:Stores:More)/
+
+# OS Generated files #
+######################
+.DS_Store
