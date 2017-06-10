@@ -9,3 +9,11 @@ Meeting-Sean(Electrodes:Diagrams:Stores:More)/
 # OS Generated files #
 ######################
 .DS_Store
+
+# Arduino Backup files #
+########################
+*.ino*
+
+# ODS Lock Files #
+##################
+.~lock.*
