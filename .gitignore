@@ -12,7 +12,8 @@ Meeting-Sean(Electrodes:Diagrams:Stores:More)/
 
 # Arduino Backup files #
 ########################
-*.ino*
+*.ino~
+*.ino.sw*
 
 # ODS Lock Files #
 ##################
