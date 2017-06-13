@@ -1,1 +1,2 @@
 This is the first Arduino project, we tried communicating between two arduinos using SPI protocol.
+Code description can be found here: https://arduino.stackexchange.com/questions/16348/how-do-you-use-spi-on-an-arduino
