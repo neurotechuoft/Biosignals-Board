@@ -2,36 +2,34 @@
 // It will bootup the ADS and configure its control registers to use a test signal as input 
 #include <ADS1299.h>
 
+/*
+  Arduino Uno Pin Assignments 
+  SCK = 13
+  MISO [DOUT] = 12
+  MOSI [DIN] = 11
+  CS = 10;
+  RESET = 7;
+  DRDY = 8;
+
+*/
+
+#include <ADS1299.h>
+
 ADS1299 ADS;
 
-//Arduino Uno - Pin Assignments; Need to use ICSP for later AVR boards
-// SCK = 13
-// MISO [DOUT] = 12
-// MOSI [DIN] = 11
-// CS = 10; 
-// DRDY = 9;
-
-//  0x## -> Arduino Hexadecimal Format
-//  0b## -> Arduino Binary Format
-
-boolean deviceIDReturned = false;
-boolean startedLogging = false;
-int DRDY = 9;
-int CS = 10;
 
 void setup() {
+  // don't put anything before the initialization routine for recommended POR
+  ADS.initialize(8,7,10,4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz);
 
   Serial.begin(115200);
-  Serial.println();
-  Serial.println("ADS1299-bridge has started!");
-  
+  Serial.println("ADS1299 Converting Test Signal");
+  delay(1000);
 
-  
-  ADS.setup(DRDY, CS); // (DRDY pin, CS pin);
-  delay(10);  //delay to ensure connection
-  
-  ADS.RESET();
-  
+  ADS.verbose = true;      // when verbose is true, there will be Serial feedback
+  ADS.RESET();             // all registers set to default
+  ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS
+ 
 }
 
 void loop() {
