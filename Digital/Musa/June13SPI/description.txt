@@ -1,0 +1,1 @@
+Continue communication between 2 Arduinos implementing SPI protocol
