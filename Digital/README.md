@@ -10,3 +10,7 @@
 
 ### OpenBCI
 * OpenBCI Cyton Documentation: http://docs.openbci.com/Hardware/02-Cyton
+
+### Background Topics
+* Data Transmission - PCM/PAM, Synchronous/Asynchronous (Only stuff before ASK, slide 23, is relevant) 
+    - http://andrei.clubcisco.ro/cursuri/3rl/tapus/RC_CA_Curs_03_Digital_Transmission_ASK_FSK_PSK.pdf

@@ -12,36 +12,28 @@
   Future Methods:
   - Commands/functions to edit ADS1299 settings without having to rewrite entire register bytes (ex. "setNumChannels(4);" would automatically power-down channels 5-8 by accessing those bits behind the scenes)
   - Fix timing issue with RDATAC - right now some data is getting lost (from test below, you'll see the serial monitor consistantly prints ~1511 samples from 225ms to 10000ms, but that # should be ~2443 based on default 250samples/second setting)
-  - add SD-card functionality to log data packets to an SD
+ - add SD-card functionality to log data packets to an SD
   - add txt file creation/writing for data storage when operating through a computer
 */
-
-// This code is a modified version of example_2.ino provided in the ADS1299 library.
-#include <ADS1299.h>
+ #include <ADS1299.h>
 
 ADS1299 ADS;
 
-//Arduino Uno - Pin Assignments; Need to use ICSP for later AVR boards
-// SCK = 13
-// MISO [DOUT] = 12
-// MOSI [DIN] = 11
-// CS = 10; 
-// DRDY = 9;
-
-//  0x## -> Arduino Hexadecimal Format
-//  0b## -> Arduino Binary Format
-
-boolean deviceIDReturned = false;
-boolean startedLogging = false;
+// Arduino Pins
+int pinSCLK = 13;
+int pinMISO = 12;
+int pinMOSI = 11;
+int pinCS = 10;
+int pinRESET = 7;
+int pinDRDY = 8;
 
 void setup() {
+  // don't put anything before the initialization routine for recommended POR  
+  ADS.initialize(pinDRDY, pinRESET, pinCS, 4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz, Daisy_en = 0);
 
   Serial.begin(115200);
-  Serial.println();
-  Serial.println("ADS1299-bridge has started!");
-  
-  ADS.setup(9, 10); // (DRDY pin, CS pin);
-  delay(10);  //delay to ensure connection
+  Serial.println("ADS1299 Bootup and Convert"); 
+  delay(1000);   
   
   ADS.RESET();
 }
@@ -68,15 +60,15 @@ void loop(){
     //     Enable multiple readback mode
     //     Connect interanal oscillator clock to CLK pin when CLKSEL pin = 1
     //     Set data rate to fMOD / 4096 (250 samples per second)
-    ADS.WREG(CONFIG1, 0b11010110);
-    Serial.println("----------------------------------------------");
-    
+    //ADS.WREG(CONFIG1, 0b11010110);
+    //Serial.println("----------------------------------------------");
+    /
     //Repeat PRINT ALL REGISTERS to verify that WREG changed the CONFIG1 register
-    ADS.RREG(0x00, 0x17);
-    Serial.println("----------------------------------------------");
+    //ADS.RREG(0x00, 0x17);
+    //Serial.println("----------------------------------------------");
     
     //Start data conversions command
-    ADS.START(); //must start before reading data continuous
+    //ADS.START(); //must start before reading data continuous
     deviceIDReturned = true;
   }
   
