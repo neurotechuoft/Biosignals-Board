@@ -17,9 +17,13 @@ void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _FREQ, boolean _isDai
 	CS = _CS;
 	int FREQ = _FREQ;
 	int RST = _RST;
-	
-	delay(50);				// recommended power up sequence requiers Tpor (~32mS)	
 	pinMode(RST,OUTPUT);
+
+	
+        pinMode(RST, HIGH)
+
+	delay(50);				// recommended power up sequence requiers Tpor (~32mS)	
+	
 	pinMode(RST,LOW);
 	delayMicroseconds(4);	// toggle reset pin
 	pinMode(RST,HIGH);

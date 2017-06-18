@@ -31,12 +31,16 @@ int pinCS = 10; // ADS input
 int pinCLKSEL = 9; // ADS input
 int pinDRDY = 8;  
 int pinRESET = 7; // ADS input
-int pinPWDN = 6; // ADS input
+int pinPWDN = 6; // ADS input 
 
 void setup() {
    pinMode(pinCLKSEL, OUTPUT);
-   digitalWrite(pinCLKSEL, HIGH);
+   pinMode(pinPWDN, OUTPUT);
+   
 
+   digitalWrite(pinCLKSEL, HIGH);
+   digitalWrite(pinPWDN, HIGH);
+   
   // don't put anything before the initialization routine for recommended POR  
   ADS.initialize(pinDRDY, pinRESET, pinCS, 4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz, Daisy_en = 0);
 
