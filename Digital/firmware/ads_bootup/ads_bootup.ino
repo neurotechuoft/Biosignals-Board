@@ -24,19 +24,24 @@
 ADS1299 ADS;
 
 // Arduino Pins
-int pinSCLK = 13;
+int pinSCLK = 13; //ADS input
 int pinMISO = 12;
-int pinMOSI = 11;
-int pinCS = 10;
-int pinRESET = 7;
-int pinDRDY = 8;
+int pinMOSI = 11; // ADS input (DIN)
+int pinCS = 10; // ADS input
+int pinCLKSEL = 9; // ADS input
+int pinDRDY = 8;  
+int pinRESET = 7; // ADS input
+int pinPWDN = 6; // ADS input
 
 void setup() {
+   pinMode(pinCLKSEL, OUTPUT);
+   digitalWrite(pinCLKSEL, HIGH);
+
   // don't put anything before the initialization routine for recommended POR  
   ADS.initialize(pinDRDY, pinRESET, pinCS, 4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz, Daisy_en = 0);
 
   Serial.begin(115200);
-  Serial.println("ADS1299-Arduion UNO Example 1"); 
+  Serial.println("ADS1299 Bootup"); 
   delay(1000);             
 
   ADS.verbose = true;      // when verbose is true, there will be Serial feedback 
