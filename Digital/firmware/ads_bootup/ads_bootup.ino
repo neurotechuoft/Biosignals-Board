@@ -44,21 +44,22 @@ void setup() {
 
   Serial.begin(115200);
   Serial.println("ADS1299 Bootup"); 
-  //delay(50);             
+  delay(50);             
 
   ADS.verbose = true;      // when verbose is true, there will be Serial feedback 
-  //ADS.RESET();             // all registers set to default
-  //ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS
+  ADS.RESET();             // all registers set to default
+  ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS
   
-  digitalWrite(pinCS, LOW);
-  ADS.transfer(0x00);
-  byte data = ADS.transfer(0x00);
-  digitalWrite(pinCS, HIGH);
-  Serial.println(data);
+  //digitalWrite(pinCS, LOW);
+  //ADS.transfer(0x00);
+  //byte data = ADS.transfer(0x00);
+  //digitalWrite(pinCS, HIGH);
+  //Serial.print("Received: ");
+  //Serial.println(data);
   
-  //ADS.getDeviceID();
+  ADS.getDeviceID();
 
-  //ADS.RREGS(0x00,0x17);    // read ADS registers starting at 0x00 and ending at 0x17
+  ADS.RREGS(0x00,0x17);    // read ADS registers starting at 0x00 and ending at 0x17
   //ADS.WREG(CONFIG3,0xE0);  // enable internal reference buffer
   //ADS.RREG(CONFIG3);       // verify write
   //for(byte i=CH1SET; i<=CH8SET; i++){   // set up to modify the 8 channel setting registers
