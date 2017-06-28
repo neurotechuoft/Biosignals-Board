@@ -28,6 +28,7 @@
 #define PIN_RST (9)
 #define PIN_CS (10)
 #define SCK_MHZ (4)
+#define PIN_PWDN (6)
 
 //gainCode choices
 #define ADS_GAIN01 (0b00000000)

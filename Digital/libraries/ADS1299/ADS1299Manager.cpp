@@ -15,7 +15,7 @@ void ADS1299Manager::initialize(void) {
 //Initilize the ADS1299 controller...call this once
 void ADS1299Manager::initialize(const int version,boolean isDaisy) 
 {
-  ADS1299::initialize(PIN_DRDY,PIN_RST,PIN_CS,SCK_MHZ,isDaisy); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz);
+  ADS1299::initialize(PIN_DRDY,PIN_RST,PIN_CS, PIN_PWDN, SCK_MHZ,isDaisy); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz);
   delay(100);
     
   verbose = false;      // when verbose is true, there will be Serial feedback 

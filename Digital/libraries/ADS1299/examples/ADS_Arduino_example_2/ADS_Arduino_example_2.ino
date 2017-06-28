@@ -36,7 +36,7 @@ boolean testing = false;               // this flag is set in serialEvent on rec
 
 void setup() {
   // don't put anything before the initialization routine for recommended POR  
-  ADS.initialize(8,9,10,4); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz);
+  ADS.initialize(8,9,10,4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz);
 
   Serial.begin(115200);
   Serial.println("ADS1299-Arduino UNO Example 2"); 

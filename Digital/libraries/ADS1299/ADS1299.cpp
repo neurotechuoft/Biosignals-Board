@@ -11,22 +11,25 @@
 #include "pins_arduino.h"
 #include "ADS1299.h"
 
-void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _FREQ, boolean _isDaisy){
+void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boolean _isDaisy){
 	isDaisy = _isDaisy;
 	DRDY = _DRDY;
 	CS = _CS;
 	int FREQ = _FREQ;
 	int RST = _RST;
+	int PWDN = _PWDN;
+
 	pinMode(RST,OUTPUT);
+	pinMode(PWDN, OUTPUT);
 
-	
-        pinMode(RST, HIGH)
+	digitalWrite(PWDN, HIGH);
 
+    digitalWrite(RST, HIGH); // Original code was pinMode(RST, HIGH)????
 	delay(50);				// recommended power up sequence requiers Tpor (~32mS)	
 	
-	pinMode(RST,LOW);
+	digitalWrite(RST,LOW);
 	delayMicroseconds(4);	// toggle reset pin
-	pinMode(RST,HIGH);
+	digitalWrite(RST,HIGH);
 	delayMicroseconds(20);	// recommended to wait 18 Tclk before using device (~8uS);
 	
 
@@ -46,30 +49,37 @@ void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _FREQ, boolean _isDai
     digitalWrite(SCK, LOW);
     digitalWrite(MOSI, LOW);
     digitalWrite(SS, HIGH);
+
+
+    SPI.setBitOrder(MSBFIRST);
+	SPI.setClockDivider(SPI_CLOCK_DIV4);
+	SPI.setDataMode(SPI_MODE1);
+
+
     
     // set as master and enable SPI
-    SPCR |= _BV(MSTR);
-    SPCR |= _BV(SPE);
+    //SPCR |= _BV(MSTR);
+    //SPCR |= _BV(SPE);
     //set bit order
-    SPCR &= ~(_BV(DORD)); ////SPI data format is MSB (pg. 25)
+    //SPCR &= ~(_BV(DORD)); ////SPI data format is MSB (pg. 25)
 	// set data mode
-    SPCR = (SPCR & ~SPI_MODE_MASK) | SPI_DATA_MODE; //clock polarity = 0; clock phase = 1 (pg. 8)
+    //SPCR = (SPCR & ~SPI_MODE_MASK) | SPI_DATA_MODE; //clock polarity = 0; clock phase = 1 (pg. 8)
     // set clock divider
-	switch (FREQ){
-		case 8:
-			DIVIDER = SPI_CLOCK_DIV_2;
-			break;
-		case 4:
-			DIVIDER = SPI_CLOCK_DIV_4;
-			break;
-		case 1:
-			DIVIDER = SPI_CLOCK_DIV_16;
-			break;
-		default:
-			break;
-	}
-    SPCR = (SPCR & ~SPI_CLOCK_MASK) | (DIVIDER);  // set SCK frequency  
-    SPSR = (SPSR & ~SPI_2XCLOCK_MASK) | (DIVIDER); // by dividing 16MHz system clock
+	//switch (FREQ){
+	//	case 8:
+	//		DIVIDER = SPI_CLOCK_DIV_2;
+	//		break;
+	//	case 4:
+	//		DIVIDER = SPI_CLOCK_DIV_4;
+	//		break;
+	//	case 1:
+	//		DIVIDER = SPI_CLOCK_DIV_16;
+	//		break;
+	//	default:
+	//		break;
+	//}
+    //SPCR = (SPCR & ~SPI_CLOCK_MASK) | (DIVIDER);  // set SCK frequency  
+    //SPSR = (SPSR & ~SPI_2XCLOCK_MASK) | (DIVIDER); // by dividing 16MHz system clock
     
     
     
@@ -148,6 +158,7 @@ byte ADS1299::RREG(byte _address) {		//  reads ONE register at _address
     transfer(opcode1); 					//  opcode1
     transfer(0x00); 					//  opcode2
     regData[_address] = transfer(0x00);//  update mirror location with returned byte
+    Serial.println(regData[_address]);
     digitalWrite(CS, HIGH); 			//  close SPI	
 	if (verbose){						//  verbose output
 		printRegisterName(_address);
@@ -167,9 +178,9 @@ byte ADS1299::RREG(byte _address) {		//  reads ONE register at _address
 
 // Read more than one register starting at _address
 void ADS1299::RREGS(byte _address, byte _numRegistersMinusOne) {
-//	for(byte i = 0; i < 0x17; i++){
-//		regData[i] = 0;					//  reset the regData array
-//	}
+	for(byte i = 0; i < 0x17; i++){
+		regData[i] = 0;					//  reset the regData array
+	}
     byte opcode1 = _address + 0x20; 	//  RREG expects 001rrrrr where rrrrr = _address
     digitalWrite(CS, LOW); 				//  open SPI
     transfer(opcode1); 					//  opcode1
@@ -405,12 +416,12 @@ void ADS1299::printRegisterName(byte _address) {
 
 //SPI communication methods
 byte ADS1299::transfer(byte _data) {
-	cli();
+	//cli();
     SPDR = _data;
-    while (!(SPSR & _BV(SPIF)))
-        ;
-	sei();
-    return SPDR;
+    while (!(SPSR & _BV(SPIF))) {
+       return SPDR;
+    }
+	//sei();
 }
 
 // Used for printing HEX in verbose feedback mode

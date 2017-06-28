@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <Arduino.h>
+#include <SPI.h>
 #include <avr/pgmspace.h>
 #include "Definitions.h"
 
@@ -18,7 +19,7 @@
 class ADS1299 {
 public:
     
-    void initialize(int _DRDY, int _RST, int _CS, int _FREQ, boolean _isDaisy);
+    void initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boolean _isDaisy);
     
     //ADS1299 SPI Command Definitions (Datasheet, p35)
     //System Commands
