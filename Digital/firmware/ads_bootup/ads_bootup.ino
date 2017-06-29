@@ -16,6 +16,7 @@
   MISO [DOUT] = 12
   MOSI [DIN] = 11
   CS = 10; 
+  
   RESET = 7;
   DRDY = 8;
   
@@ -43,10 +44,14 @@ void setup() {
   ADS.initialize(pinDRDY, pinRESET, pinCS, pinPWDN, 4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz, Daisy_en = 0);
 
   Serial.begin(115200);
+  Serial.println("\n");
   Serial.println("ADS1299 Bootup"); 
-  delay(50);             
+  delay(1000);             
 
-  ADS.verbose = true;      // when verbose is true, there will be Serial feedback 
+  ADS.verbose = true;      // when verbose is true, there will be Serial feedback
+  Serial.print("MISO: ");
+  Serial.println(digitalRead(pinMISO)); 
+  Serial.println("\n");
   ADS.RESET();             // all registers set to default
   ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS
   
