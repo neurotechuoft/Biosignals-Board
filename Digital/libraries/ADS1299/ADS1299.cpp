@@ -24,7 +24,7 @@ void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boo
 
 	digitalWrite(PWDN, HIGH);
 
-    digitalWrite(RST, HIGH); // Original code was pinMode(RST, HIGH)????
+        digitalWrite(RST, HIGH); // Original code was pinMode(RST, HIGH)????
 	delay(50);				// recommended power up sequence requiers Tpor (~32mS)	
 	
 	digitalWrite(RST,LOW);
@@ -37,62 +37,33 @@ void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boo
     
     // Set direction register for SCK and MOSI pin.
     // MISO pin automatically overrides to INPUT.
-    // When the SS pin is set as OUTPUT, it can be used as
+    // When the CS pin is set as OUTPUT, it can be used as
     // a general purpose output port (it doesn't influence
     // SPI operations).
     
-    pinMode(SCK, OUTPUT);
-    pinMode(MOSI, OUTPUT);
-    pinMode(SS, OUTPUT);
+    pinMode(SCK, OUTPUT); // Slave Clock
+    pinMode(MOSI, OUTPUT); // Master out, Slave in
+    pinMode(CS, OUTPUT); // Chip Select
 	
     
     digitalWrite(SCK, LOW);
     digitalWrite(MOSI, LOW);
-    digitalWrite(SS, HIGH);
+    digitalWrite(CS, HIGH);
 
 
+    SPI.begin();
     SPI.setBitOrder(MSBFIRST);
-	SPI.setClockDivider(SPI_CLOCK_DIV4);
-	SPI.setDataMode(SPI_MODE1);
+    SPI.setClockDivider(SPI_CLOCK_DIV8);
+    SPI.setDataMode(SPI_MODE1);
 
-
-    
-    // set as master and enable SPI
-    //SPCR |= _BV(MSTR);
-    //SPCR |= _BV(SPE);
-    //set bit order
-    //SPCR &= ~(_BV(DORD)); ////SPI data format is MSB (pg. 25)
-	// set data mode
-    //SPCR = (SPCR & ~SPI_MODE_MASK) | SPI_DATA_MODE; //clock polarity = 0; clock phase = 1 (pg. 8)
-    // set clock divider
-	//switch (FREQ){
-	//	case 8:
-	//		DIVIDER = SPI_CLOCK_DIV_2;
-	//		break;
-	//	case 4:
-	//		DIVIDER = SPI_CLOCK_DIV_4;
-	//		break;
-	//	case 1:
-	//		DIVIDER = SPI_CLOCK_DIV_16;
-	//		break;
-	//	default:
-	//		break;
-	//}
-    //SPCR = (SPCR & ~SPI_CLOCK_MASK) | (DIVIDER);  // set SCK frequency  
-    //SPSR = (SPSR & ~SPI_2XCLOCK_MASK) | (DIVIDER); // by dividing 16MHz system clock
-    
-    
-    
-    
-    
     // **** ----- End of SPI Setup ----- **** //
     
+
     // initalize the  data ready chip select and reset pins:
     pinMode(DRDY, INPUT);
     pinMode(CS, OUTPUT);
-	
-	digitalWrite(CS,HIGH); 	
-	digitalWrite(RST,HIGH);
+    digitalWrite(CS,HIGH); 	
+    digitalWrite(RST,HIGH);
 }
 
 //System Commands
@@ -408,7 +379,7 @@ void ADS1299::printRegisterName(byte _address) {
     }
     else if(_address == MISC2){
         Serial.print(F("MISC2, "));
-    }
+    }	
     else if(_address == CONFIG4){
         Serial.print(F("CONFIG4, "));
     }
@@ -416,12 +387,9 @@ void ADS1299::printRegisterName(byte _address) {
 
 //SPI communication methods
 byte ADS1299::transfer(byte _data) {
-	//cli();
-    SPDR = _data;
-    while (!(SPSR & _BV(SPIF))) {
-       return SPDR;
-    }
-	//sei();
+   // Do no need to disable interrupts because SPI.transfer() already nests the polling loop with this   
+   byte receivedByte = SPI.transfer(_data);
+   return receivedByte;
 }
 
 // Used for printing HEX in verbose feedback mode

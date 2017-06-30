@@ -49,19 +49,8 @@ void setup() {
   delay(1000);             
 
   ADS.verbose = true;      // when verbose is true, there will be Serial feedback
-  Serial.print("MISO: ");
-  Serial.println(digitalRead(pinMISO)); 
-  Serial.println("\n");
   ADS.RESET();             // all registers set to default
-  ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS
-  
-  //digitalWrite(pinCS, LOW);
-  //ADS.transfer(0x00);
-  //byte data = ADS.transfer(0x00);
-  //digitalWrite(pinCS, HIGH);
-  //Serial.print("Received: ");
-  //Serial.println(data);
-  
+  ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS  
   ADS.getDeviceID();
 
   ADS.RREGS(0x00,0x17);    // read ADS registers starting at 0x00 and ending at 0x17
