@@ -11,6 +11,11 @@
 #include "pins_arduino.h"
 #include "ADS1299.h"
 
+ADS1299::ADS1299() {
+	plotMOSI = false;
+	plotMISO = false;
+}
+
 void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boolean _isDaisy){
 	isDaisy = _isDaisy;
 	DRDY = _DRDY;
@@ -19,12 +24,14 @@ void ADS1299::initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boo
 	int RST = _RST;
 	int PWDN = _PWDN;
 
+	verbose = true;
+
 	pinMode(RST,OUTPUT);
 	pinMode(PWDN, OUTPUT);
 
 	digitalWrite(PWDN, HIGH);
 
-        digitalWrite(RST, HIGH); // Original code was pinMode(RST, HIGH)????
+    digitalWrite(RST, HIGH); // Original code was pinMode(RST, HIGH)????
 	delay(50);				// recommended power up sequence requiers Tpor (~32mS)	
 	
 	digitalWrite(RST,LOW);
@@ -388,8 +395,17 @@ void ADS1299::printRegisterName(byte _address) {
 //SPI communication methods
 byte ADS1299::transfer(byte _data) {
    // Do no need to disable interrupts because SPI.transfer() already nests the polling loop with this   
-   byte receivedByte = SPI.transfer(_data);
-   return receivedByte;
+
+	// Plot outgoing byte on Arduino IDE Serial Plotter
+	if (plotMOSI) serialPlotData(_data);
+	
+	// Send byte
+   	byte receivedByte = SPI.transfer(_data);
+
+   	// Plot received byte on Arduino IDE Serial Plotter
+   	if (plotMISO) serialPlotData(receivedByte);
+
+   	return receivedByte;
 }
 
 // Used for printing HEX in verbose feedback mode
@@ -401,7 +417,55 @@ void ADS1299::printHex(byte _data){
 
 //-------------------------------------------------------------------//
 //-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
+
+// --------------- This is an experimental section ------------------//
+
+void ADS1299::serialPlotData(byte _data) {
+	// This is tweaked to make the data best fit the Serial Plotter window
+	// For example, let's say the window is 500 time unites long. To send
+	// 4 bits, set cyclesPerBit = 500/4 = 125. Round down if a decimal.
+	//
+	// TOFIX: need a better way
+	//
+	int cyclesPerBit = 62; 
+	int pinMOSI = 11;
+
+	// Plot data being sent on the serial plotter in the Arduino IDE
+	for(int j = 0; j<8; j++) {
+		for (int p = 0; p < cyclesPerBit; p++)
+			Serial.println(bitRead(_data, 7-j));
+			//Serial.println(digitalRead(pinMOSI));
+	}
+}
+
+
+// Turn on/off plotting of MISO outputs to the Serial plotter
+void ADS1299::setPlotMOSI(boolean setting) {
+	plotMOSI = setting;
+
+	// Serial plotter plots anything that is being outputted with Serial.print(), so only
+    // one of plotMISO, plotMOSI, and verbose can be on at a time.
+	plotMISO &= ~plotMOSI; // turn off plotMISO if plotMOSI is set to true
+	verbose &= ~plotMOSI; // turn off verbose if plotMOSI is set to true
+}
+
+// Turn on/off plotting of MOSI outputs to the Serial plotter
+void ADS1299::setPlotMISO(boolean setting) {
+	plotMISO = setting;
+
+	// Serial plotter plots anything that is being outputted with Serial.print(), so only
+    // one of plotMISO, plotMOSI, and verbose can be on at a time.
+	plotMOSI &= ~plotMISO; // turn off plotMOSI if plotMISO is set to true
+	verbose &= ~plotMISO; // turn off Serial feedback if plotMISO is set to true
+}
+
+boolean ADS1299::getPlotMOSI() {
+	return plotMOSI;
+}
+
+boolean ADS1299::getPlotMISO() {
+	return plotMISO;
+}
 
 
 

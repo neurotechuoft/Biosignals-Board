@@ -18,6 +18,8 @@
 
 class ADS1299 {
 public:
+    // constructor
+    ADS1299(); 
     
     void initialize(int _DRDY, int _RST, int _CS, int _PWDN, int _FREQ, boolean _isDaisy);
     
@@ -47,6 +49,13 @@ public:
     //SPI Transfer function
     byte transfer(byte _data);
 
+    // ------- Experimental functions for Serial plotting) -------------//
+    void setPlotMOSI(bool setting);
+    void setPlotMISO(bool setting);
+    boolean getPlotMOSI();
+    boolean getPlotMISO();
+    void serialPlotData(byte _data);
+
     //configuration
     int DRDY, CS; 		// pin numbers for DRDY and CS 
     int DIVIDER;		// select SPI SCK frequency
@@ -55,6 +64,10 @@ public:
     long channelData [16];	// array used when reading channel data board 1+2
     boolean verbose;		// turn on/off Serial feedback
     boolean isDaisy;		// does this have a daisy chain board?
+
+private:
+    boolean plotMOSI; // turn on/off plotting of MOSI in Serial plotter
+    boolean plotMISO; // turn on/off plotting of MISO in Serial plotter
     
     
 };

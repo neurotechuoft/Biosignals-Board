@@ -55,4 +55,13 @@
 #define MISC2 0x16
 #define CONFIG4 0x17
 
+#define PIN_SCLK 	(13) //ADS input
+#define PIN_MISO 	(12)
+#define PIN_MOSI 	(11) // ADS input (DIN)
+#define PIN_CS 	 	(10) // ADS input
+#define PIN_CLKSEL 	 (9) // ADS input
+#define PIN_DRDY 	 (8)  
+#define PIN_RESET 	 (7) // ADS input
+#define PIN_PWDN 	 (6) // ADS input 
+
 #endif
