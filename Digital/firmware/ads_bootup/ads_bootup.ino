@@ -1,5 +1,3 @@
-
-
 /*Developed by Joel Murphy and Conor Russomanno (Summer 2013)
   This example uses the ADS1299 Arduino Library, a software bridge between the ADS1299 chip and 
   Arduino. See http://www.ti.com/product/ads1299 for more information about the device and the README
@@ -9,51 +7,49 @@
   Yup, it's a simple SPI link hello world functional test. When verbose is true, there will be Serial feedback.
   NOTE: the datasheet will tell you that the Channel Set Registers (0x05 to 0x0C) default to 0x60. Don't believe it.
   The default value for these locations is 0x61. 
-  
-  
-  Arduino Uno - Pin Assignments
-  SCK = 13
-  MISO [DOUT] = 12
-  MOSI [DIN] = 11
-  CS = 10; 
-  
-  RESET = 7;
-  DRDY = 8;
-  
 */
 
 #include <ADS1299.h>
 
 ADS1299 ADS;
 
-// Arduino Pins
-int pinSCLK = 13; //ADS input
-int pinMISO = 12;
-int pinMOSI = 11; // ADS input (DIN)
-int pinCS = 10; // ADS input
-int pinCLKSEL = 9; // ADS input
-int pinDRDY = 8;  
-int pinRESET = 7; // ADS input
-int pinPWDN = 6; // ADS input 
+/* 
+ *  Arduino -> ADS1299 Pins
+ *  -----------------------
+ *  Pin                   (ADS)  (Arduino)      (ADS I/O)
+ *  -------------------------------------------------------
+ *  PIN_SCLK              (40) -> (D13)           (I)
+ *  PIN_MOSI (ADS DOUT)   (43) -> (D12)           (O)
+ *  PIN_MISO (ADS DIN)    (34) -> (D11)           (I)
+ *  PIN_CS                (39) -> (D10)           (I)
+ *  PIN_CLKSEL            (40) -> (D13)           (I)
+ *  PIN_DRDY              (47) ->  (D8)           (O)
+ *  PIN_RESET             (36) ->  (D7)           (I)
+ *  PIN_PWDN              (35) ->  (D6)           (I)
+ */
 
 void setup() {
-   pinMode(pinCLKSEL, OUTPUT);
-   digitalWrite(pinCLKSEL, HIGH); // Set CLKSEL to high because using internal oscillator
+   pinMode(PIN_CLKSEL, OUTPUT);
+   digitalWrite(PIN_CLKSEL, HIGH); // Set CLKSEL to high because using internal oscillator
 
-  // (DRDY pin, RST pin, CS pin, PWDN pin, SCK frequency in MHz, Daisy_en = 0);
-  ADS.initialize(pinDRDY, pinRESET, pinCS, pinPWDN, 4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz, Daisy_en = 0);
+  ADS.initialize(PIN_DRDY, PIN_RESET, PIN_CS, PIN_PWDN, 4, false); // (DRDY pin, RST pin, CS pin, SCK frequency in MHz, Daisy_en = 0);
 
   Serial.begin(115200);
   Serial.println("\n");
   Serial.println("ADS1299 Bootup"); 
-  delay(1000);             
+  delay(1000);   
 
   ADS.verbose = true;      // when verbose is true, there will be Serial feedback
+  
   ADS.RESET();             // all registers set to default
   ADS.SDATAC();            // stop Read Data Continuous mode to communicate with ADS  
   ADS.getDeviceID();
 
   ADS.RREGS(0x00,0x17);    // read ADS registers starting at 0x00 and ending at 0x17
+  
+  //----------------------------------------------------
+  //----------------------------------------------------
+  
   //ADS.WREG(CONFIG3,0xE0);  // enable internal reference buffer
   //ADS.RREG(CONFIG3);       // verify write
   //for(byte i=CH1SET; i<=CH8SET; i++){   // set up to modify the 8 channel setting registers
@@ -66,6 +62,8 @@ void setup() {
 } // end of setup
 
 void loop(){
-  //delay(5000);
-  //Serial.println("Waiting");
+  //Serial.println("-----------------------------------------------------\n");
+  //delay(1000);
+  //ADS.RREGS(0x00,0x17);    // read ADS registers starting at 0x00 and ending at 0x17
+  //delay(1000);
 } // end of loop
