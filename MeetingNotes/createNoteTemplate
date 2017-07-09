@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# This script generates meeting note templates and fills in the known fields like location, date, time, and next 
+# This script generates meeting note templates and fills in the known fields like location, date, time, and next
 # meeting date depending on the day you run the script.
-# For example, running the script on Monday to Wednesday will create meeting notes for the upcoming Wednesday, 
-# and on any other day it will create meeting notes for the upcoming Sunday meeting. 
-# 
-# Usage: 
+# For example, running the script on Monday to Wednesday will create meeting notes for the upcoming Wednesday,
+# and on any other day it will create meeting notes for the upcoming Sunday meeting.
+#
+# Usage:
 # 	If the file for that day already exists, the script will open the file and exit.
-# 	To open the file after creating it, run the script with a -o argument. e.g. ./createNote -o 
+# 	To open the file after creating it, run the script with a -o argument. e.g. ./createNote -o
 #
 # I wrote this script to save myself some time writing Markdown syntax and as a way to learn bash, so
 # there's probably a lot of poor coding style and syntax.
-# 
+#
 # This script is a work in progress, I will be making improvements on an ongoing basis.
 
 
@@ -19,12 +19,12 @@ DAY=$(date +%u)
 
 if [ $DAY -le 3 ]; then \
 	DAYS_UNTIL=$((3-$DAY)); \
-	DAYS_UNTIL_NEXT=$((3-$DAY+4));	
+	DAYS_UNTIL_NEXT=$((3-$DAY+4));
 else \
 	DAYS_UNTIL=$((7-$DAY)); \
-	DAYS_UNTIL_NEXT=$((7-$DAY+3));	
+	DAYS_UNTIL_NEXT=$((7-$DAY+3));
 fi;
-	
+
 MEETING_DATE=$(date --date="$DAYS_UNTIL day" +"%Y-%m-%d")
 FILEPATH="/home/albert/Documents/BioSignalsBoard_2017/GitRepos/Biosignals-Board/MeetingNotes" # Replace this with the path to your MeetingNotes directory
 FILENAME=$MEETING_DATE.md
@@ -37,8 +37,8 @@ if [ -f $FILE ]; then \
 else \
 	# Overwrite file if it exists
 	echo "# Meeting Notes"$'\n' > $FILE
-	
-	# Set time, location and next meeting fields based on today	
+
+	# Set time, location and next meeting fields based on today
 	if [ $DAY -le 3 ]; then \
 		TIME="6:30pm - 8:00pm"; \
 		LOC="Clubhouse, Rm. 510"; \
@@ -63,9 +63,11 @@ else \
 
 	echo "## Notes"$'\n' >> $FILE
 
+	echo "## To-Do"$'\n' >> $FILE # Wasn't included for files before Jul 09
+
 	echo "## Next Meeting: $NEXT" >> $FILE
-	
-	echo "Finished creating $FILENAME" 
+
+	echo "Finished creating $FILENAME"
 fi;
 
 # Open file for edit (Can replace vim with your prefered text editor)
