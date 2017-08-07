@@ -22,7 +22,7 @@ ADS1299 ADS;
  *  PIN_MOSI (ADS DOUT)   (43) -> (D12)           (O)
  *  PIN_MISO (ADS DIN)    (34) -> (D11)           (I)
  *  PIN_CS                (39) -> (D10)           (I)
- *  PIN_CLKSEL            (40) -> (D13)           (I)
+ *  PIN_CLKSEL            (52) ->  (D9)           (I)
  *  PIN_DRDY              (47) ->  (D8)           (O)
  *  PIN_RESET             (36) ->  (D7)           (I)
  *  PIN_PWDN              (35) ->  (D6)           (I)
