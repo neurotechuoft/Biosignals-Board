@@ -14,5 +14,8 @@
  - Setup VNC  
  - Setup Wi-Fi connection on UofT Network
 
-### Notes and Issues
+### Notes
+ - Biosignals-Board Github repo can be jumped to by running 'cd $BIOSIGNALS_BOARD'
+ 
+### Issues
  - Cannot ping external ip-addresses other than localhost
