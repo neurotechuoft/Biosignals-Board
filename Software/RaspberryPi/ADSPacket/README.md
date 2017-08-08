@@ -17,7 +17,7 @@ Right now, the class can take in an array of 8 floating point numbers (one numbe
 
 ### Files
  - main.cpp is the program used to test the class. It generates random 24-bit numbers in the acceptable range for the ADS1299 and creates 500 ADSPacket objects from them. These objects are printed.
- - A Makefile is included to compile the required files into an executable **run**.
+ - A Makefile is included to compile the required files into an executable **run.exe**.
  - Run './print_packets' to print the packets to terminal
  - Run './log_packets' to save the output to ./packets.log file.
  -
