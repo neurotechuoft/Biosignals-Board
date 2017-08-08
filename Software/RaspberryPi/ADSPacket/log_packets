@@ -1,0 +1,9 @@
+#!/bin/csh
+
+rm -rf packets.log
+
+# Compile and generate packets to log file
+make -s
+./run 2> packets.log   
+
+echo "Packets logged in packets.log"
