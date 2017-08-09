@@ -5,8 +5,8 @@ Time:  11:00 am
 Location:  Design Center + Office PT374D  
 Attendees:
 - Oishe Farhan
-- Bruno Korst, Communications & Advanced Electronics Lab Manager
-- Mike Mehramiz, Design Centre Lab Manager
+- Bruno Korst, [Communications & Advanced Electronics Lab Manager](https://www.ece.utoronto.ca/undergraduates/hardware-computer-labs/communications-lab/)
+- Mike Mehramiz, [Design Centre Lab Manager](https://www.ece.utoronto.ca/undergraduates/hardware-computer-labs/design-centre/)
 
 ## Notes
 - PCB manufactoring
