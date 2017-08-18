@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#wget https://raw.githubusercontent.com/raspberrypi/linux/rpi-3.10.y/Documentation/spi/spidev_test.c
+
+gcc -o spidev_test spidev_test.c
+./spidev_test -D /dev/spidev0.0
+
+
+
+
+
