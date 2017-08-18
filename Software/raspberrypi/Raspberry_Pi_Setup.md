@@ -9,9 +9,13 @@
  - Set-up ssh
  - Set-up basic environment settings
  - Clone Biosignals-Board Git Repository
+ - Setup VNC
+ - Install and setup wiringPi. Follow instructions here: http://wiringpi.com/download-and-install/
+ - Test wiringPi SPI Library: http://wiringpi.com/reference/spi-library/
+   - Verified wiringPi blink.c example can blink LED on Arduino
+ - Verified SPI send/receive functionality by running loopback test: ./RaspberryPi/spi_tests/spi_loopback
 
 ### To-do
- - Setup VNC  
  - Setup Wi-Fi connection on UofT Network
 
 ### Notes
