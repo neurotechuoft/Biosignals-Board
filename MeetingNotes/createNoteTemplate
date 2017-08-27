@@ -26,7 +26,7 @@ else \
 fi;
 
 MEETING_DATE=$(date --date="$DAYS_UNTIL day" +"%Y-%m-%d")
-FILEPATH="/home/albert/Documents/BioSignalsBoard_2017/GitRepos/Biosignals-Board/MeetingNotes" # Replace this with the path to your MeetingNotes directory
+FILEPATH=$PWD # Replace this with the path to your MeetingNotes directory
 FILENAME=$MEETING_DATE.md
 FILE="$FILEPATH/$FILENAME"
 
@@ -36,6 +36,8 @@ if [ -f $FILE ]; then \
 	exit 0;
 else \
 	# Overwrite file if it exists
+	rm -rf $FILE;
+	touch $FILE;
 	echo "# Meeting Notes"$'\n' > $FILE
 
 	# Set time, location and next meeting fields based on today
