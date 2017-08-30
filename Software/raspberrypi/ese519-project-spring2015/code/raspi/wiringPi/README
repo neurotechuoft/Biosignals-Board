@@ -1,0 +1,133 @@
+Pinouts for the raspi b+ - 
+1. http://pi4j.com/pins/model-b-plus.html
+2. http://elinux.org/RPi_BCM2835_GPIOs
+
+http://mitchtech.net/raspberry-pi-msp430-spi/
+
+
+Setting up the rasberry pi b+
+
+1. Get the hardware
+
+2. Format the sd card completely
+
+3. Use the noob.zip from online and extract the contents before putting this into the raspi
+		- Make sure you change the pc name if you'd want in the initial setup. 
+
+
+4. username - pi, password - raspberry, startx
+
+5. sudo nano /etc/network/interface 
+	- auto wlan0 add this to the top of the file and comment out the next line
+	
+6. sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+	- network={
+        ssid="name-wifi"
+        psk="pass-wifi"
+        proto=RSN
+        key_mgmt=WPA-PSK
+        pairwise=CCMP
+        auth_alg=OPEN
+		}
+
+7. 	To connect the wireless, 
+	sudo ifup wlan0
+	
+	to take down the wireless,
+	sudo ifdown wlan0
+	
+	Use these commands if you seem stuck somewhere,
+	
+8. Installing node.js on the raspberry.
+	wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
+	sudo dpkg -i node_latest_armhf.deb
+	Check using : node -v	
+	
+-- 
+How to start the cuilpi without any monitor, 
+1. Connect everything together on the pi and switch on the hotspot on the phone.
+
+2. Connect the laptop to the phone's hotspot.
+
+2. ssh pi@cuilpi after about 2 minutes and you would ssh into the raspberry pi automatically.
+
+
+-- Easiest way to transfer anything from the PC to cuilpi (make sure the wifi hotspot connection is established) 	
+1. Navigate to the directory where your data is stored. 
+
+2. run: python -m SimpleHTTPServer 9090
+
+3. download on the pi like: wget <ipaddress_of_pc>:9090/filename
+
+Same to pull anything out from the pi to the pc.
+
+
+
+Geting the SPI to work! 
+=======================
+
+-- 
+Running the msp430 
+
+Download the online linux gcc toolchain for msp430g2335
+make all
+sudo mspdebug rf2500
+prog a.out
+
+See - http://mitchtech.net/raspberry-pi-msp430-spi/
+
+On the raspi verify - http://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md
+and see pinouts -  http://pi4j.com/pins/model-b-plus.html
+http://www.blaess.fr/christophe/files/article-2014-08-07/Connecteur_P1.pdf
+
+
+Getting the ADS1299 to work!
+============================
+
+Motherboard and the frontend are connected via three types of jumper 
+connections, 
+J2 - For motherboard configuring the amplifier card
+J3 - SPI connections to the motherboard for raw eeg retrieval
+J4 - Power Supply to the frontend from the motherboard
+
+
+The digital signals for J3 are on page 16 of the user guide. 
+
+
+
+Two different type of channel registers,
+1. Global Channel registers for configuring the entire ADS1299.
+	Page 19 of the user guide
+
+2. Channel input for each channel
+
+
+See the register map at page 26. 
+
+The data format starts in the Datasheet of the ADC1299 at page 25. 
+Schematics page 49
+
+clksel is used to configure where to use the clock from. By default it 
+is 1 and thus uses the internal oscillator. Gnd it to use the external 
+oscillator. For the initial config to work, the CONFIG1.CLK_ENBIT 
+should be 1. 
+
+Signals on J3.
+1. clksel
+2. MISO
+3. MOSI
+4. ~CS
+5. SPICLK
+5. ~DRDY to signal that data conversion is complete. (independent of 
+CS)
+6. Ext clk
+7. Reset
+8. GPIOs
+9. Reset
+
+doubts
+1. Whats the bias used for ?
+2. Lead off detection
+3. 
+
+

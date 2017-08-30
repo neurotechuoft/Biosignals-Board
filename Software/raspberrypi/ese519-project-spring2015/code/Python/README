@@ -1,0 +1,12 @@
+The python in this folder contains all scripts used for testing and evaluating feature extraction and machine learning.
+
+--------------------------------------------------------------------------------------------------------
+Python Code used in Final Demo:
+
+server_realtimeFEATEXT.py
+
+This script did the following:
+		-Read from .txt file created by server (contains 4 seconds of data)
+		-Computed features of the data contained in that 4 second window
+		-Classified the current emotion of the user based on extracted features
+

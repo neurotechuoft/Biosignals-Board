@@ -1,0 +1,12 @@
+The following connections need to be made in the hardware for the above files to work,
+
+
+1. Connect both grounds
+2. Pin 23 on pi - P1.4 on MSP430
+3. Pin 21 on pi - P1.1
+4. Pin 19 on pi - P1.2
+
+
+http://www.raspberry-projects.com/pi/programming-in-c/spi/using-the-spi-interface
+
+http://www.lorien-sistemas.com/ols/40_pin.png

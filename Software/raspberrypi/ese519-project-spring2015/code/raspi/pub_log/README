@@ -1,0 +1,23 @@
+There are various ways to do this, 
+
+1. Write a node.js server and client
+	- node raspi.js 
+	- open the test.html page on the client side
+        - Good for visualizing the data
+	
+	![alt tag](http://i.imgur.com/fpIdHK5.jpg)
+	
+	
+2. Write a simple tcp client and server implementation
+	- Very simple python server client implementation something like http://pymotw.com/2/socket/tcp.html
+
+3. Use netcat command
+	- run cat data.dat | pv -b | nc -l 3333 on the server side, replace data.dat with the file you want to send
+	- run nc <ip-address-of-server> 3333 | pv -b > savedData.dat on the client side
+	- To simultaneously save data as well as process it, use pipes
+
+I found 3 to be the easiest as its super easy to interface with files and pipes. 
+I recommened using 3 for this project. 
+
+If the data wants to be visualized then just run the node version. 
+This is also extensible because we can easily implement SPI directly on the raspi and readout the data to the pc. (thoughts?)

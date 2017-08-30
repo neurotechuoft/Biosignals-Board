@@ -1,0 +1,48 @@
+<script src="./socket.io.js"></script>
+<script type="text/javascript" src="./smoothie.js"></script>
+
+
+<body>
+
+<!--Create space to print values -->
+<H1 align="center" style="border:1px solid #ccc font-size:30px" id="number">&nbsp;</H1>
+
+<!-- Create canvas to show the values in realtime -->
+<canvas id="mycanvas" width="1300" height="550"></canvas>
+
+
+<H1 align="center" style="border:1px solid #ccc font-size:30px" >Plot data from the Raspberry Pi</H1>
+
+
+
+<!-- Get data from the socket and show the values in realtime -->
+<script type="text/javascript">
+
+<!-- Create a timeSeries -->
+var line1 = new TimeSeries();
+
+<!-- Create the socket to connect to specific address and port-->
+var socket = io.connect('http://192.168.43.139:8080');
+
+<!-- Stream the data from the socket -->
+socket.on('stream', function (data) {
+	<!-- Log the data into the console -->
+	console.log(data.n);
+
+	<!-- Appead data to the timeseries created earlier -->
+	line1.append(new Date().getTime(), data.n);
+	
+	<!-- Publish data to the number id element -->	
+    document.getElementById('number').innerHTML='Data point value: ' + data.n;
+  });
+
+
+
+var smoothie = new SmoothieChart({ grid: { strokeStyle: 'rgb(125, 0, 0)', fillStyle: 'rgb(60, 0, 0)', lineWidth: 1, millisPerLine: 250, verticalSections: 6 } });
+smoothie.addTimeSeries(line1, { strokeStyle: 'rgb(0, 255, 0)', fillStyle: 'rgba(0, 255, 0, 0.4)', lineWidth: 3 });
+
+<!-- Stream data to the canvas -->
+smoothie.streamTo(document.getElementById("mycanvas"), 1000);
+
+</script>
+</body>

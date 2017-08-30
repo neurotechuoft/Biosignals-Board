@@ -1,0 +1,12 @@
+// README
+
+Use the python -m SimpleHTTPServer 9999 to transfer between pi and the pc.
+
+
+Todo:
+1. Include all the ads1299 startup spi command interface 
+2. Create a proper makefile
+	- for now use gcc -o spi main.c ads1299.c bcm2835.c for compiling and sudo ./spi to run
+	- find -l rt and -l bcm2835
+3. header files manage
+4. 

@@ -1,0 +1,2 @@
+# Exclude the node modules
+/code/webapp/node_modules/**
