@@ -26,34 +26,47 @@ else \
 fi;
 
 MEETING_DATE=$(date --date="$DAYS_UNTIL day" +"%Y-%m-%d")
-FILEPATH=$PWD # Replace this with the path to your MeetingNotes directory
+FILEPATH=$PWD 
 FILENAME=$MEETING_DATE.md
 FILE="$FILEPATH/$FILENAME"
 
-if [ -f $FILE ]; then \
-	echo "$FILENAME already exists! Opening file..."; \
-	vim $FILE; \
+WED_TIME="7:10pm - 9:00pm"
+WED_LOC="Clubhouse, Rm. 410"
+
+SUNDAY_TIME="12:00pm - 3:00pm"
+SUNDAY_LOC="BA3200"
+
+
+if [ -f $FILE ]; then
+	echo "$FILENAME already exists! Opening file..."; 
+	vim $FILE; 
 	exit 0;
-else \
+else 
 	# Overwrite file if it exists
 	rm -rf $FILE;
 	touch $FILE;
 	echo "# Meeting Notes"$'\n' > $FILE
 
 	# Set time, location and next meeting fields based on today
-	if [ $DAY -le 3 ]; then \
-		TIME="6:30pm - 8:00pm"; \
-		LOC="Clubhouse, Rm. 510"; \
-	elif [ $DAY -le 7 ]; then \
-		TIME="12:00pm - 3:00pm"; \
-		LOC="BA3200"; \
-	else \
-		TIME="TBD"; \
-		LOC="TBD"; \
-		NEXT="TBD"; \
-	fi; \
+	if [ $DAY -le 3 ]; then 
+		TIME=$WED_TIME;
+		LOC=$WED_LOC; 
+	elif [ $DAY -le 7 ]; then
+		TIME=$SUNDAY_TIME; 
+		LOC=$SUNDAY_LOC; 
+	else 
+		TIME="TBD"; 
+		LOC="TBD"; 
+		NEXT="TBD"; 
+	fi; 
 
-	NEXT=$(date --date="$DAYS_UNTIL_NEXT day" +"%A %b %d, %Y"); \
+	NEXT=$(date --date="$DAYS_UNTIL_NEXT day" +"%A %b %d, %Y"); 
+
+	if [ $LOC -eq $WED_LOC ]; then
+		NEXT_LOC=$SUNDAY_LOC;
+	else
+		NEXT_LOC=$WED_LOC;
+	fi;
 
 	# Append to the file
 	echo "Date:  $(date --date="$DAYS_UNTIL day" +"%B %d, %Y")  " >>  $FILE
@@ -66,15 +79,20 @@ else \
 	echo "## Notes"$'\n' >> $FILE
 
 	echo "## To-Do"$'\n' >> $FILE # Wasn't included for files before Jul 09
+	
+	echo "## Next Meeting Agenda"$'\n' >> $FILE # Wasn't included for files before Sept 3
 
-	echo "## Next Meeting: $NEXT" >> $FILE
+	echo "## Next Meeting: $NEXT, $NEXT_LOC" >> $FILE
 
 	echo "Finished creating $FILENAME"
 fi;
 
+# Always open the file
+gvim $FILE
+
 # Open file for edit (Can replace vim with your prefered text editor)
-if [ $# -ne 0 ]; then \
-	if [ $1 == "-o" ]; then \
-		vim $FILE; \
-	fi; \
-fi;
+#if [ $# -ne 0 ]; then \
+#	if [ $1 == "-o" ]; then \
+#		gvim $FILE; \
+#	fi; \
+#fi;
