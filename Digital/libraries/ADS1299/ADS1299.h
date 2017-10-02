@@ -50,8 +50,8 @@ public:
     byte transfer(byte _data);
 
     // ------- Experimental functions for Serial plotting) -------------//
-    void setPlotMOSI(bool setting);
-    void setPlotMISO(bool setting);
+    void setPlotMOSI(boolean setting);
+    void setPlotMISO(boolean setting);
     boolean getPlotMOSI();
     boolean getPlotMISO();
     void serialPlotData(byte _data);
