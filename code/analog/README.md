@@ -2,8 +2,8 @@
 
 ## Passive Staged Analog Filters
 
-[Passive Filter](./PassiveFilter/passive_filter.ipynb)
+[Passive Filter](./python/PassiveFilter/passive_filter.ipynb)
 
 ## High Quality Signal Generator
 
-[Arduino_Signal_Generator](./SignalGenerator/README.md)
+[Arduino_Signal_Generator](./arduino/SignalGenerator/README.md)
