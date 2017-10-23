@@ -1,0 +1,6 @@
+#!/bin/zsh
+# Converting from markdown to docx
+for file in *.md;
+pandoc -s $file -o ${file:r}.docx;
+# echo ${file:r}.docx;
+# pandoc -s *.md -o *.docx
