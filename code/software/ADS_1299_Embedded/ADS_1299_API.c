@@ -15,7 +15,7 @@ void ADS1299_bootup(){
     delayMicroseconds(4);
     
     digitalWrite(RESET_PIN,HIGH); // write pin to high
-    delayMicroseconds(20); // delay time for bootup
+    delayMicroseconds(25000); // delay time for bootup
     
     return 0;
 
