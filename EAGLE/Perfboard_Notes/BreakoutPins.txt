@@ -1,0 +1,3 @@
+Decide which pins need to be probed:
+- clk
+
