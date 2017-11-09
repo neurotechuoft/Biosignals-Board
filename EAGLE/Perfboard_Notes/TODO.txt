@@ -1,0 +1,9 @@
+TASKS
+
+Perfboard:
+- Record values on the schematic for
+  - resistors
+  - capacitors
+- Test GND solder trace for:
+  - impedence
+  - frequency analysis

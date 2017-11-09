@@ -1,3 +1,29 @@
-Decide which pins need to be probed:
-- clk
+Pins in need of a breakout
 
+- Control
+	- DRDY
+	- CLKSEL
+	- CLK
+	- PWDN
+	- RESET
+	- START
+
+- SPI
+	- CS
+	- SCLK
+	- DIN
+	-	DOUT
+
+- Power
+	- *VCAP1*
+	- VCAP2
+	- VCAP3
+	- VCAP4
+	- VREFP
+	- VREFN
+
+Pins not needed to breakout:
+- GPIO 1
+- GPIO 2
+- GPIO 3
+- GPIO 4
