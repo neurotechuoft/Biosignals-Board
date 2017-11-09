@@ -1,5 +1,5 @@
-#ifndef ADS_1299_Embedded
-#define ADS_1299_Embedded
+#ifndef ADS1299_WiringPi
+#define ADS1299_WiringPi
 
 void ADS1299_bootup();
 
