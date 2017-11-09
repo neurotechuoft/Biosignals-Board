@@ -1,7 +1,7 @@
 #define RESET_PIN 10
 #include <stdio.h>
 #include <wiringPi.h>
-
+#include "ADS1299_WiringPi.h"
 
 void ADS1299_bootup(){
 	/* Function: Boots up ADS1299
