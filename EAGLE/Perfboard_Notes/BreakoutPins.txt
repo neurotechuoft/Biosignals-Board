@@ -31,11 +31,13 @@ Pins not needed to breakout:
 
 Albert's suggested edits:
 
+(Everything below assumes that "breakout" means that this pin will be connected to a header pin to be driven/probed externally. Hence, power pins are excluded from the list)
+
 *Perfboard (Test board) Breakout Pins* 
 
 - Digital
   - Communication:
-    - CS    (SPI)
+    - !CS    (SPI)
     - SCLK  (SPI)
     - DIN   (SPI)
     - DOUT  (SPI)
@@ -54,22 +56,22 @@ Albert's suggested edits:
   - VREFN
     
 - Internal Breakouts (These pins can be probed to monitor internal on-chip components)
-    - CLK   -> Can be configured to output buffered system clock
-    - VCAP1 -> Connected to bandgap reference. Can be probed to check analog circuitry power-up
+  - CLK   -> Can be configured to output buffered system clock
+  - VCAP1 -> Connected to bandgap reference. Can be probed to check analog circuitry power-up
 
 *PCB Breakout Pins*
 
 - Digital
   - Communication:
-    - CS    (SPI)
+    - !CS    (SPI)
     - SCLK  (SPI)
     - DIN   (SPI)
     - DOUT  (SPI)
     - DRDY  (ADS1299 - specific) 
 
   - Control:
-    - RESET (ADS1299 - specific) 
     - !PWDN (ADS1299 - specific) 
+    - RESET (ADS1299 - specific) 
 
 - Analog
   - VREFP
