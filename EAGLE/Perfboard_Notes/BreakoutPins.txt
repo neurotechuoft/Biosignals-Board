@@ -1,4 +1,4 @@
-Pins in need of a breakout
+Pins in need of a breakout (from PCB Team)
 
 - Control
 	- DRDY
@@ -12,7 +12,7 @@ Pins in need of a breakout
 	- CS
 	- SCLK
 	- DIN
-	-	DOUT
+	- DOUT
 
 - Power
 	- *VCAP1*
@@ -27,3 +27,51 @@ Pins not needed to breakout:
 - GPIO 2
 - GPIO 3
 - GPIO 4
+
+
+Albert's suggested edits:
+
+*Perfboard (Test board) Breakout Pins* 
+
+- Digital
+  - Communication:
+    - CS    (SPI)
+    - SCLK  (SPI)
+    - DIN   (SPI)
+    - DOUT  (SPI)
+    - DRDY  (ADS1299 - specific)
+
+  - Control:
+    - !PWDN (ADS1299 - specific)
+    - START (ADS1299 - specific)
+    - RESET (ADS1299 - specific)  
+
+  - Configuration:
+    - CLKSEL
+
+- Analog
+  - VREFP
+  - VREFN
+    
+- Internal Breakouts (These pins can be probed to monitor internal on-chip components)
+    - CLK   -> Can be configured to output buffered system clock
+    - VCAP1 -> Connected to bandgap reference. Can be probed to check analog circuitry power-up
+
+*PCB Breakout Pins*
+
+- Digital
+  - Communication:
+    - CS    (SPI)
+    - SCLK  (SPI)
+    - DIN   (SPI)
+    - DOUT  (SPI)
+    - DRDY  (ADS1299 - specific) 
+
+  - Control:
+    - RESET (ADS1299 - specific) 
+    - !PWDN (ADS1299 - specific) 
+
+- Analog
+  - VREFP
+  - VREFN
+
