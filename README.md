@@ -17,8 +17,5 @@ We will be developing during the summer and fall of 2017, targetting project com
 * Developed high-level schematic of entire system
 ![High-level Schematic](./resources/FixedProject.png) 
 
-## Future Tasks
-* Follow [./meeting_notes](./meeting_notes) for updates
-
 ## Excellent Resources
 * [EEG PocketGuide](https://drive.google.com/file/d/0B4xsbDIeDmLPY3hObm1DVjV1TmM/view?usp=sharing)
