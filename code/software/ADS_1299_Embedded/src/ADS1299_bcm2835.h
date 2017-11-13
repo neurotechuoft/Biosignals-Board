@@ -7,7 +7,7 @@ void ADS1299_bootup();
 
 ///////////// SPI Interface functions //////////////
 
-void ADS1299_read_register(uint8_t reg_addr);
+uint8_t ADS1299_read_register(uint8_t reg_addr);
 
 
 /////////////// Testing functions //////////////////

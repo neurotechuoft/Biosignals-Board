@@ -2,11 +2,11 @@ TARGET   = neuro
 
 CC       = gcc
 # compiling flags here
-CFLAGS   = -std=c99 -Wall -I.
+CFLAGS   = -std=c99 -Wall -I. -Isrc/wiringPi -Isrc 
 
 LINKER   = gcc
 # linking flags here
-LFLAGS   = -Wall -I. -lm
+LFLAGS   = -Wall -I. -Isrc/wiringPi -Isrc  -lm  
 
 # change these to proper directories where each file should be
 SRCDIR   = src
