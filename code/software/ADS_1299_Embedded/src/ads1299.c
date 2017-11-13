@@ -4,11 +4,11 @@
 // Datasheet - http://www.ti.com/lit/ds/symlink/ads1299.pdf
 
 
-#include "bcm2835.h"
+#include <bcm2835.h>
 #include <stdint.h>
-#include "definitions.h"
+#include <Definitions.h>
 #include <stdio.h>
-#include "ads1299.h"
+#include <ads1299.h>
 
 
 // function call to set up all the communication between the raspberry pi bplus and the ADS1299 development board.
