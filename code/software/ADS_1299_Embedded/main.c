@@ -1,5 +1,5 @@
 /*Include the needed libraries for functionality*/
-#include <stdout>
+#include <stdio.h>
 
 
 int main(int argc, char **argv)
