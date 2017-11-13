@@ -4,7 +4,7 @@
   
    Author: Mike McCauley
    Copyright (C) 2011-2013 Mike McCauley
-   $Id: bcm2835.h,v 1.20 2015/03/31 04:55:41 mikem Exp mikem $
+   $Id: bcm2835.h,v 1.19 2015/03/28 05:27:32 mikem Exp mikem $
 */
 
 /*! \mainpage C library for Broadcom BCM 2835 as used in Raspberry Pi
@@ -23,7 +23,7 @@
   BCM 2835).
   
   The version of the package that this documentation refers to can be downloaded 
-  from http://www.airspayce.com/mikem/bcm2835/bcm2835-1.48.tar.gz
+  from http:  www.airspayce.com/mikem/bcm2835/bcm2835-1.42.tar.gz
   You can find the latest version at http://www.airspayce.com/mikem/bcm2835
   
   Several example programs are provided.
@@ -408,19 +408,6 @@
   \version 1.44 Added documention about the need for device tree to be enabled on RPI2.<br>
   Improvements to detection of availablity of DMB instruction based on value of __ARM_ARCH macro.<br>
 
-  \version 1.45 Fixed an error in the pad group offsets that would prevent bcm2835_gpio_set_pad() 
-  and bcm2835_gpio_pad() working correctly with non-0 pad groups. Reported by Guido.
-
-  \version 1.46 2015-09-18
-           Added symbolic definitions for remaining pins on 40 pin GPIO header on RPi 2. <br>
-
-  \version 1.47 2015-11-18
-  Fixed possibly incorrect reads in bcm2835_i2c_read_register_rs, patch from Eckhardt Ulrich.<br>
-
-  \version 1.48 2015-12-08
-  Added patch from Eckhardt Ulrich that fixed problems that could cause hanging with bcm2835_i2c_read_register_rs
-  and others.
-
   \author  Mike McCauley (mikem@airspayce.com) DO NOT CONTACT THE AUTHOR DIRECTLY: USE THE LISTS
 */
 
@@ -431,7 +418,7 @@
 
 #include <stdint.h>
 
-#define BCM2835_VERSION 10048 /* Version 1.48 */
+#define BCM2835_VERSION 10042 /* Version 1.42 */
 
 /* RPi 2 is ARM v7, and has DMB instruction for memory barriers.
    Older RPis are ARM v6 and don't, so a coprocessor instruction must be used instead.
@@ -706,17 +693,6 @@ typedef enum
     RPI_V2_GPIO_P1_23     = 11,  /*!< Version 2, Pin P1-23, CLK when SPI0 in use */
     RPI_V2_GPIO_P1_24     =  8,  /*!< Version 2, Pin P1-24, CE0 when SPI0 in use */
     RPI_V2_GPIO_P1_26     =  7,  /*!< Version 2, Pin P1-26, CE1 when SPI0 in use */
-    RPI_V2_GPIO_P1_27     =  0,  /*!< Version 2, Pin P1-27 */
-    RPI_V2_GPIO_P1_28     =  1,  /*!< Version 2, Pin P1-28 */
-    RPI_V2_GPIO_P1_29     =  5,  /*!< Version 2, Pin P1-29 */
-    RPI_V2_GPIO_P1_31     =  6,  /*!< Version 2, Pin P1-31 */
-    RPI_V2_GPIO_P1_32     = 12,  /*!< Version 2, Pin P1-32 */
-    RPI_V2_GPIO_P1_33     = 13,  /*!< Version 2, Pin P1-33 */
-    RPI_V2_GPIO_P1_35     = 19,  /*!< Version 2, Pin P1-35 */
-    RPI_V2_GPIO_P1_36     = 16,  /*!< Version 2, Pin P1-36 */
-    RPI_V2_GPIO_P1_37     = 26,  /*!< Version 2, Pin P1-37 */
-    RPI_V2_GPIO_P1_38     = 20,  /*!< Version 2, Pin P1-38 */
-    RPI_V2_GPIO_P1_40     = 21,  /*!< Version 2, Pin P1-40 */
 
     /* RPi Version 2, new plug P5 */
     RPI_V2_GPIO_P5_03     = 28,  /*!< Version 2, Pin P5-03 */
@@ -724,7 +700,7 @@ typedef enum
     RPI_V2_GPIO_P5_05     = 30,  /*!< Version 2, Pin P5-05 */
     RPI_V2_GPIO_P5_06     = 31,  /*!< Version 2, Pin P5-06 */
 
-    /* RPi B+ J8 header, also RPi 2 40 pin GPIO header */
+    /* RPi B+ J8 header */
     RPI_BPLUS_GPIO_J8_03     =  2,  /*!< B+, Pin J8-03 */
     RPI_BPLUS_GPIO_J8_05     =  3,  /*!< B+, Pin J8-05 */
     RPI_BPLUS_GPIO_J8_07     =  4,  /*!< B+, Pin J8-07 */
@@ -744,13 +720,13 @@ typedef enum
     RPI_BPLUS_GPIO_J8_26     =  7,  /*!< B+, Pin J8-26, CE1 when SPI0 in use */
     RPI_BPLUS_GPIO_J8_29     =  5,  /*!< B+, Pin J8-29,  */
     RPI_BPLUS_GPIO_J8_31     =  6,  /*!< B+, Pin J8-31,  */
-    RPI_BPLUS_GPIO_J8_32     = 12,  /*!< B+, Pin J8-32,  */
-    RPI_BPLUS_GPIO_J8_33     = 13,  /*!< B+, Pin J8-33,  */
-    RPI_BPLUS_GPIO_J8_35     = 19,  /*!< B+, Pin J8-35,  */
-    RPI_BPLUS_GPIO_J8_36     = 16,  /*!< B+, Pin J8-36,  */
-    RPI_BPLUS_GPIO_J8_37     = 26,  /*!< B+, Pin J8-37,  */
-    RPI_BPLUS_GPIO_J8_38     = 20,  /*!< B+, Pin J8-38,  */
-    RPI_BPLUS_GPIO_J8_40     = 21   /*!< B+, Pin J8-40,  */
+    RPI_BPLUS_GPIO_J8_32     =  12, /*!< B+, Pin J8-32,  */
+    RPI_BPLUS_GPIO_J8_33     =  13, /*!< B+, Pin J8-33,  */
+    RPI_BPLUS_GPIO_J8_35     =  19, /*!< B+, Pin J8-35,  */
+    RPI_BPLUS_GPIO_J8_36     =  16, /*!< B+, Pin J8-36,  */
+    RPI_BPLUS_GPIO_J8_37     =  26, /*!< B+, Pin J8-37,  */
+    RPI_BPLUS_GPIO_J8_38     =  20, /*!< B+, Pin J8-38,  */
+    RPI_BPLUS_GPIO_J8_40     =  21  /*!< B+, Pin J8-40,  */
 } RPiGPIOPin;
 
 /* Defines for SPI
@@ -840,7 +816,7 @@ typedef enum
     BCM2835_SPI_CLOCK_DIVIDER_2048  = 2048,    /*!< 2048 = 8.192us = 122.0703125kHz */
     BCM2835_SPI_CLOCK_DIVIDER_1024  = 1024,    /*!< 1024 = 4.096us = 244.140625kHz */
     BCM2835_SPI_CLOCK_DIVIDER_512   = 512,     /*!< 512 = 2.048us = 488.28125kHz */
-    BCM2835_SPI_CLOCK_DIVIDER_256   = 256,     /*!< 256 = 1.024us = 976.5625kHz */
+    BCM2835_SPI_CLOCK_DIVIDER_256   = 256,     /*!< 256 = 1.024us = 976.5625MHz */
     BCM2835_SPI_CLOCK_DIVIDER_128   = 128,     /*!< 128 = 512ns = = 1.953125MHz */
     BCM2835_SPI_CLOCK_DIVIDER_64    = 64,      /*!< 64 = 256ns = 3.90625MHz */
     BCM2835_SPI_CLOCK_DIVIDER_32    = 32,      /*!< 32 = 128ns = 7.8125MHz */
@@ -1007,7 +983,7 @@ extern "C" {
       Prints messages to stderr in case of errors.
       \return 1 if successful else 0
     */
-    extern int bcm2835_init(int);
+    extern int bcm2835_init(void);
 
     /*! Close the library, deallocating any allocated memory and closing /dev/mem
       \return 1 if successful else 0
@@ -1169,25 +1145,12 @@ extern "C" {
     */
     extern uint8_t bcm2835_gpio_eds(uint8_t pin);
 
-    /*! Same as bcm2835_gpio_eds() but checks if any of the pins specified in
-      the mask have detected a level or edge.
-      \param[in] mask Mask of pins to check. Use eg: (1 << RPI_GPIO_P1_03) | (1 << RPI_GPIO_P1_05)
-      \return Mask of pins HIGH if the event detect status for the given pin is true.
-    */
-    extern uint32_t bcm2835_gpio_eds_multi(uint32_t mask);
-
     /*! Sets the Event Detect Status register for a given pin to 1, 
       which has the effect of clearing the flag. Use this afer seeing
       an Event Detect Status on the pin.
       \param[in] pin GPIO number, or one of RPI_GPIO_P1_* from \ref RPiGPIOPin.
     */
     extern void bcm2835_gpio_set_eds(uint8_t pin);
-
-    /*! Same as bcm2835_gpio_set_eds() but clears the flag for any pin which
-      is set in the mask.
-      \param[in] mask Mask of pins to clear. Use eg: (1 << RPI_GPIO_P1_03) | (1 << RPI_GPIO_P1_05)
-     */
-    extern void bcm2835_gpio_set_eds_multi(uint32_t mask);
 
     /*! Enable Rising Edge Detect Enable for the specified pin.
       When a rising edge is detected, sets the appropriate pin in Event Detect Status.
