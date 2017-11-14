@@ -9,8 +9,8 @@
 #define __DEBUG__
 
 
-// 
-#define PIN_DRDY  RPI_BPLUS_GPIO_J8_15 	// Make Pin 22 the DRDY pin
+// Digital Pins
+#define PIN_DRDY  RPI_BPLUS_GPIO_J8_15 	// Make Pin 15 the DRDY pin
 #define PIN_CS    RPI_BPLUS_GPIO_J8_24  // Make Pin 24 (CE0) the CS pin
 #define PIN_RESET RPI_BPLUS_GPIO_J8_18  // Make Pin 18 the RESET pin
 
@@ -208,5 +208,16 @@
 //	[1:1]	!SINGLE_SHOT
 //	[0:0]	Reserved
 #define CONFIG4        0x17
+
+//////////////// ADS1299 Control Register Default Values /////////////////////////////
+
+// Note for unknown bits, set default to 1 so when ANDing in check, does not corrupt output.
+
+// ID is unknown
+#define ID_DEFAULT 			0xFE
+
+#define CONFIG1_DEFAULT		0x96	
+#define CONFIG2_DEFAULT		0xA0
+#define CONFIG3_DEFAULT		0x60
 
 #endif
