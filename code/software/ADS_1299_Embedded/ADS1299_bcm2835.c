@@ -1,9 +1,19 @@
+
+// for printf
+#include <stdio.h>
+
+// for uint8_t datatypes
+#include <stdint.h>
+
+#include <stdbool.h>
+
 #include "bcm2835.h"
-#include <ADS1299_bcm2835.h>
-#include <ADS1299_definitions.h>
+#include "ADS1299_definitions.h"
+#include "ADS1299_bcm2835.h"
+
 
 // Include ese519 library
-#include <ads1299.h>
+#include "ads1299.h"
  
 void ADS1299_init() {
 
@@ -74,10 +84,24 @@ void ADS1299_test_registers() {
 	// Read all control registers
 	uint8_t reg_id, reg_config1, reg_config2, reg_config3;
 
-	reg_id      = ADS1299_read_register(ID);
-	reg_config1 = ADS1299_read_register(CONFIG1);
-	reg_config2 = ADS1299_read_register(CONFIG2);
-	reg_config3	= ADS1299_read_register(CONFIG3);
+	test_register(     ID, ID_DEFAULT,      &reg_id);
+	test_register(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
+	test_register(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
+	test_register(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
+}
+
+bool test_register(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
+	*actual = ADS1299_read_register(reg_addr);
+	if (actual && expected) {
+		#ifdef _DEBUG_
+		printf("Passed");
+		printf("\nRead: %b\nExpected: %b\n\n", actual, expected);
+		#endif
+		return true;
+	} else {
+		printf("Failed");
+		return false;
+	}
 }
 
 
