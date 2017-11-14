@@ -6,7 +6,7 @@
 
 #include "bcm2835.h"
 #include <stdint.h>
-#include "definitions.h"
+#include "ADS1299_definitions.h"
 #include <stdio.h>
 #include "ads1299.h"
 
