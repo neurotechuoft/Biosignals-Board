@@ -92,14 +92,20 @@ void ADS1299_test_registers() {
 
 bool test_register(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
 	*actual = ADS1299_read_register(reg_addr);
-	if (actual && expected) {
-		#ifdef _DEBUG_
+	if (*actual && expected) {
+		#ifdef __DEBUG__
 		printf("Passed");
-		printf("\nRead: %b\nExpected: %b\n\n", actual, expected);
+		printf("\nRead: %x\nExpected: %x\n\n", *actual, expected);
 		#endif
 		return true;
 	} else {
+		#ifdef __DEBUG__
 		printf("Failed");
+		printf("\nRead: %x\nExpected: %x\n\n", *actual, expected);
+		#endif
+
+		printf("Failed\n");
+
 		return false;
 	}
 }
