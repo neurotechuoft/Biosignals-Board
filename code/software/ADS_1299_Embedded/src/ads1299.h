@@ -1,8 +1,11 @@
 //ads1299.h
 
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 #ifndef _ADS1299_h
 #define _ADS1299_h
-
 
 int initLibrary();
 uint8_t transferData(uint8_t);

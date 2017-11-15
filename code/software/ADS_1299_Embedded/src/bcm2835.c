@@ -35,7 +35,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <string.h>
-#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 
 #define BCK2835_LIBRARY_BUILD
