@@ -6,7 +6,7 @@ CFLAGS   = -Wall -Isrc
 
 LINKER   = gcc
 # linking flags here
-LFLAGS   = -Wall -I. -Isrc 
+LFLAGS   = -Wall -Isrc 
 
 # change these to proper directories where each file should be
 SRCDIR   = src
