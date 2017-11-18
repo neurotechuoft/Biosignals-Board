@@ -119,7 +119,7 @@ void transferCmd(uint8_t _cmd)
 	// and write to registers
 	if (((ADS1299_current_data_mode == RDATAC_MODE) || (ADS1299_current_data_mode == RDATA_MODE)) &&
 		((_cmd == _WREG) || (_cmd == _RREG))) {
-		printf("Attempted RREG or WREG while reading data. Sending SDATAC");
+		printf("\nWarning - Attempted RREG or WREG while reading data. Sending SDATAC\n");
 		transferCmd(_SDATAC);
 	}
 
@@ -128,7 +128,7 @@ void transferCmd(uint8_t _cmd)
 	// Only do this if transfer was complete
 	if ((_cmd == _RDATAC) || (_cmd == _SDATAC) || (_cmd == _RDATA)) {
 		ADS1299_current_data_mode = _cmd;
-		printf("Set data mode to %x", ADS1299_current_data_mode);
+		printf("Data mode set to %x\n\n", ADS1299_current_data_mode);
 	}
 
 }
