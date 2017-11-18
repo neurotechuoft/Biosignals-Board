@@ -14,7 +14,6 @@ void ADS1299_bootup();
 
 uint8_t ADS1299_read_register(uint8_t reg_addr);
 
-
 /////////////// Testing functions //////////////////
 
 void ADS1299_test_registers();

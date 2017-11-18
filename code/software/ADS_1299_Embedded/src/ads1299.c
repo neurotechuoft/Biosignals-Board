@@ -9,6 +9,14 @@
 #include "ads1299.h"
 #include "ADS1299_definitions.h"
 
+////////////// Global Variables //////////////
+
+// Variable used to store the current data mode of the ADS1299.
+// Either RDATAC, SDATAC, or RDATAC.
+int ADS1299_current_data_mode;
+
+//////////////////////////////////////////////
+
 // function call to set up all the communication between the raspberry pi bplus and the ADS1299 development board.
 // input: none
 // returns: 0 if everything inorder, else error code
@@ -107,8 +115,22 @@ uint8_t transferData(uint8_t _data)
 // return: none
 void transferCmd(uint8_t _cmd)
 {
+	// If the device is currently in RDATAC or RDATA mode, send SDATAC command to stop data transfer
+	// and write to registers
+	if (((ADS1299_current_data_mode == RDATAC_MODE) || (ADS1299_current_data_mode == RDATA_MODE)) &&
+		((_cmd == _WREG) || (_cmd == _RREG))) {
+		printf("Attempted RREG or WREG while reading data. Sending SDATAC");
+		transferCmd(_SDATAC);
+	}
 
 	transferData(_cmd);
+
+	// Only do this if transfer was complete
+	if ((_cmd == _RDATAC) || (_cmd == _SDATAC) || (_cmd == _RDATA)) {
+		ADS1299_current_data_mode = _cmd;
+		printf("Set data mode to %x", ADS1299_current_data_mode);
+	}
+
 }
 
 
@@ -121,13 +143,13 @@ uint8_t getDeviceId()
 	uint8_t deviceid;
 
 	// Calling _SDATAC for stopping continuous data mode
-	transferData(_SDATAC);
+	transferCmd(_SDATAC);
 
 	// Always wait for 4*TCLK after after _SDATAC passed
 	bcm2835_delayMicroseconds(4*TCLK);
 
 	// Calling _RREG for initializing read of registers
-	transferData(_RREG);
+	transferCmd(_RREG);
 
 	// Number of registers to be read 1
 	transferData(0x00);

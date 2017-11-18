@@ -60,6 +60,9 @@ void ADS1299_bootup(){
 	//set pin to high to reset and bootup; delay (TIME TO BE DECIDED DURING TESTING)
 	bcm2835_gpio_write(PIN_RESET,HIGH);
 	delay(100);
+
+	// ADS1299 boots up into RDATAC mode
+	ADS1299_current_data_mode = RDATAC_MODE;
 }
 
 /* Function: Read a single register of the ADS1299

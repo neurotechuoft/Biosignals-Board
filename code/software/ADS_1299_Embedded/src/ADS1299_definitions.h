@@ -35,6 +35,14 @@
 #define _RREG          0x20 // (also = 00100000) is the first opcode that the address must be added to for RREG communication
 #define _WREG          0x40 // 01000000 in binary (Datasheet, pg. 35)
 
+//////////////////////////// Data Retrieval Modes ////////////////////////////////////
+
+#define RDATAC_MODE    0x10
+#define SDATAC_MODE    0x11
+#define RDATA_MODE	   0x12
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 //////////////// ADS1299 Control Register Base Addresses /////////////////////////////
 
 // ID:     ID Control Register
