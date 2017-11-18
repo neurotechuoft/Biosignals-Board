@@ -125,6 +125,11 @@ void transferCmd(uint8_t _cmd)
 
 	transferData(_cmd);
 
+	if (_cmd == _SDATAC) {
+		// Always wait for 4*TCLK after after _SDATAC passed
+		bcm2835_delayMicroseconds(4*TCLK);
+	}
+
 	// Only do this if transfer was complete
 	if ((_cmd == _RDATAC) || (_cmd == _SDATAC) || (_cmd == _RDATA)) {
 		ADS1299_current_data_mode = _cmd;
