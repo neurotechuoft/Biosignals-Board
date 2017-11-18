@@ -1,0 +1,4 @@
+
+make
+
+sudo ./bin/neuro
