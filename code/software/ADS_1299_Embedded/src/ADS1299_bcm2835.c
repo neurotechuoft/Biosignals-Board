@@ -4,17 +4,13 @@
 
 // for uint8_t datatypes
 #include <stdint.h>
-
 #include <stdbool.h>
 
-#include "bcm2835.h"
 #include "ADS1299_definitions.h"
+#include "bcm2835.h"
+#include "ads1299.h"
 #include "ADS1299_bcm2835.h"
 
-
-// Include ese519 library
-#include "ads1299.h"
- 
 void ADS1299_init() {
 
 	// Configure ADS1299 - specific interface pins
@@ -64,33 +60,16 @@ void ADS1299_bootup(){
 	//set pin to high to reset and bootup; delay (TIME TO BE DECIDED DURING TESTING)
 	bcm2835_gpio_write(PIN_RESET,HIGH);
 	delay(100);
-
 }
 
 /* Function: Read a single register of the ADS1299
    Return: The data read from the register */
 uint8_t ADS1299_read_register(uint8_t reg_addr) {
+
 	return rregTransferData(1, reg_addr, 0);
 }
 
-void ADS1299_test_registers() {
-
-	// Device powers-up in RDATAC mode, so send SDATAC command to stop data transfer and write to registers
-	transferCmd(_SDATAC);
-
-	// Always wait for 4*TCLK after after _SDATAC passed
-	bcm2835_delayMicroseconds(4*TCLK);
-
-	// Read all control registers
-	uint8_t reg_id, reg_config1, reg_config2, reg_config3;
-
-	test_register(     ID, ID_DEFAULT,      &reg_id);
-	test_register(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
-	test_register(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
-	test_register(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
-}
-
-bool test_register(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
+bool register_check(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
 
 	#ifdef __DEBUG__
 	printf("\n-- Testing address 0x%x --\n", reg_addr);
@@ -111,6 +90,20 @@ bool test_register(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
 		#endif
 		return false;
 	}
+}
+
+void ADS1299_test_registers() {
+
+	// Always wait for 4*TCLK after after _SDATAC passed
+	bcm2835_delayMicroseconds(4*TCLK);
+
+	// Read all control registers
+	uint8_t reg_id, reg_config1, reg_config2, reg_config3;
+
+	register_check(     ID, ID_DEFAULT,      &reg_id);
+	register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
+	register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
+	register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
 }
 
 

@@ -107,9 +107,8 @@ uint8_t transferData(uint8_t _data)
 // return: none
 void transferCmd(uint8_t _cmd)
 {
-	// just send _RESET 
-	transferData(_cmd);
 
+	transferData(_cmd);
 }
 
 
@@ -148,18 +147,27 @@ uint8_t getDeviceId()
 uint8_t rregTransferData(int _readorwrite, uint8_t _rregadd, uint8_t _rregvalue)
 {
 	uint8_t data;
+	uint8_t opcode, cmd;
+	uint8_t n_registers = 0; // Number of registers we're reading/writing - 1
 
-	// read is 1, write is 0
+	// If _readorwrite == 1, we are reading, otherwise, we are writing
 	if (_readorwrite)
-		data = 0x20;
+		opcode = _RREG; // 0x20
 	else
-		data = 0x40;
+		opcode = _WREG; // 0x40
 
-	data = data + _rregadd;
+	// Build command by adding the base address to the opcode 
+	cmd = opcode + _rregadd;
 
-	transferData(data);
-	transferData(0x00);
+	// RREG and WREG are two byte commands. Send opcode + address as the first byte
+	transferCmd(cmd);
 
+	// The second byte of the command is the number of registers to be read from the
+	// base address (n - 1). Here, send 0 as the second byte to indicate we are
+	// reading/writing one register.
+	transferData(n_registers);
+
+	// Send/receive data to/from the ADS1299 
 	if (_readorwrite)
 		data = transferData(0x00);
 	else

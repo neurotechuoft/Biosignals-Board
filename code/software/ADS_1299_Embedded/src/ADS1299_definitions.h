@@ -20,7 +20,7 @@
 #define DVDD	       3.0  // Digital VDD
 #define AVDD	       5.0  // Analog VDD
 
-////////////////////// SPI ///////////////////////////////////////////
+////////////////////////////////// SPI ////////////////////////////////////////////////
 
 //SPI Command Definition Byte Assignments (Datasheet, pg. 35)
 #define _WAKEUP        0x02 // Wake-up from standby mode
