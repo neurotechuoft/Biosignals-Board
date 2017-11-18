@@ -3,13 +3,11 @@
 // Product Page - http://www.ti.com/product/ads1299
 // Datasheet - http://www.ti.com/lit/ds/symlink/ads1299.pdf
 
-
-#include "bcm2835.h"
 #include <stdint.h>
-#include "ADS1299_definitions.h"
 #include <stdio.h>
+#include "bcm2835.h"
 #include "ads1299.h"
-
+#include "ADS1299_definitions.h"
 
 // function call to set up all the communication between the raspberry pi bplus and the ADS1299 development board.
 // input: none
@@ -26,47 +24,47 @@ int initLibrary()
 	bcm2835_spi_begin();
 
 	// Set bit order
-    bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
+    	bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
     
-    // Set the spi mode - 4 modes
+    	// Set the spi mode - 4 modes
 	//	BCM2835_SPI_MODE1 = 1,  // CPOL = 0, CPHA = 1, Clock idle low, data is clocked in on falling edge, output data (change) on rising edge
-    bcm2835_spi_setDataMode(BCM2835_SPI_MODE1);                   // The default
+    	bcm2835_spi_setDataMode(BCM2835_SPI_MODE1);                   // The default
     
-	//Set SPI clock speed
+	// Set SPI clock speed
 	//	BCM2835_SPI_CLOCK_DIVIDER_512   = 512,     ///< 512 = 2.048us = 488.28125kHz
-    bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_512); // The default
+    	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_512); // The default
 
-    // Chip select
-    bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
+    	// Chip select
+    	bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
     
-    // Select the polarity
-    // LOW or HIGH
-    bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, HIGH);
+    	// Select the polarity
+    	// LOW or HIGH
+    	bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, HIGH);
 
-    // Set the pin_DRDY to be the input 
-    bcm2835_gpio_fsel(PIN_DRDY, BCM2835_GPIO_FSEL_INPT);
+    	// Set the pin_DRDY to be the input 
+    	bcm2835_gpio_fsel(PIN_DRDY, BCM2835_GPIO_FSEL_INPT);
 
-    // Set the ss pin to output
-    bcm2835_gpio_fsel(PIN_CS, BCM2835_GPIO_FSEL_OUTP);
+    	// Set the ss pin to output
+    	bcm2835_gpio_fsel(PIN_CS, BCM2835_GPIO_FSEL_OUTP);
     
-    // Set the ss pin to be high by default
-    bcm2835_gpio_write(PIN_CS, HIGH);
+    	// Set the ss pin to be high by default
+    	bcm2835_gpio_write(PIN_CS, HIGH);
 
 	// --- RESET THE ADS1299 --- //
 	// Issue the ss pulse
 	// bcm2835_gpio_write(PIN_CS, LOW);
-    // wait for a minimum of 2*TCLK    
-    // bcm2835_delayMicroseconds(3*TCLK);
+    	// wait for a minimum of 2*TCLK    
+    	// bcm2835_delayMicroseconds(3*TCLK);
 	// Make ss go high again
 	// NOTE : Use the reset opcode (0x60) instead
 
-    bcm2835_gpio_write(PIN_CS, LOW);
+    	bcm2835_gpio_write(PIN_CS, LOW);
 	bcm2835_delayMicroseconds(1000);
 
 	// reset opcode sent
 	transferData(0x60);
     
-    // wait for min 18*TCLK for reset
+    	// wait for min 18*TCLK for reset
 	bcm2835_delayMicroseconds(20*TCLK);
 
 	return 0;
