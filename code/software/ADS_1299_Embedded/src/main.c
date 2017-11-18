@@ -16,6 +16,10 @@ int main(int argc, char **argv)
 
     // bootup sequence
     ADS1299_bootup();
+    
+    // Uncomment to test register access protection. Second _SDATAC should not have to be sent to do
+    // register test. If commented out. _SDATAC should be sent on the first _RREG call
+    // transferCmd(_SDATAC);
 
     // Test registers' default values
     ADS1299_test_registers(); 
