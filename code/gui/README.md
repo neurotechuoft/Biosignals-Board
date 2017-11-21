@@ -18,6 +18,6 @@ Run the followings in order in the terminal:
 
 Install Homebrew: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-Install pyqt5 module: brew install pyqt5
+Install pyqt5 module: `brew install pyqt5`
 
-Insall pyqtgraph module using pip : sudo -H pip install --upgrade pyqtgraph
+Insall pyqtgraph module using pip : `sudo -H pip install --upgrade pyqtgraph`
