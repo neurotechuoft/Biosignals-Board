@@ -11,14 +11,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def testfunction(self):
         print("Works")    
 
-    #generates random data for now
-    def update1(self):  
-        global data1, curve1
-        self.data1[:-1] = data1[1:]  
-        self.data1[-1] = np.random.normal()
-        self.curve1.setData(self.data1)
-        self.update(self)
-
     #closes whole application
     def close(self):    
 
@@ -31,10 +23,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             sys.exit()
         else:
             pass
-    
-    #update all plots
-    def update(self):
-        self.update1(self)    
 
     #run on start up    
     def __init__(self, parent=None):
