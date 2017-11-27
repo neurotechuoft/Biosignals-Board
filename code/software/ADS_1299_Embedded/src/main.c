@@ -31,9 +31,9 @@ int main(int argc, char **argv)
         bootup_success = ADS1299_test_registers();
 
         if (bootup_success) {
-            printf("-- ADS1299 Boot-up Successful --");
+            printf("\n-- ADS1299 Boot-up Successful --\n");
         } else {
-            printf("-- ADS1299 Boot-up Failed --");
+            printf("\n-- ADS1299 Boot-up Failed --\n");
         }
         attempt++;
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     } while (!bootup_success && (attempt <= 5));
 
     if (!bootup_success) {
-        printf("Attempts 5 of 5 to boot ADS1299 unsuccessful. Aborting...\n");
+        printf("\nAttempts 5 of 5 to boot ADS1299 unsuccessful. Aborting...\n");
         return 1;
     }
 
