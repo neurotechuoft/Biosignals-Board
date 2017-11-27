@@ -16,7 +16,7 @@ uint8_t ADS1299_read_register(uint8_t reg_addr);
 
 /////////////// Testing functions //////////////////
 
-void ADS1299_test_registers();
+bool ADS1299_test_registers();
 bool register_check(uint8_t reg_addr, uint8_t expected, uint8_t * actual);
 
 /////////////// Other functions ///////////////////

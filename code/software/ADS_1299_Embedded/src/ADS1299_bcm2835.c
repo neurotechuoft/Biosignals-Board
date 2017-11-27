@@ -102,7 +102,9 @@ bool register_check(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
 	}
 }
 
-void ADS1299_test_registers() {
+bool ADS1299_test_registers() {
+
+	bool result = true;
 
 	// Always wait for 4*TCLK after after _SDATAC passed
 	bcm2835_delayMicroseconds(4*TCLK);
@@ -110,10 +112,14 @@ void ADS1299_test_registers() {
 	// Read all control registers
 	uint8_t reg_id, reg_config1, reg_config2, reg_config3;
 
+	// Exempt Device ID check from result
 	register_check(     ID,      ID_DEFAULT,      &reg_id);
-	register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
-	register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
-	register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
+
+	result &= register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
+	result &= register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
+	result &= register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
+
+	return result;
 }
 
 

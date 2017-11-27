@@ -12,20 +12,39 @@ int main(int argc, char **argv)
 	   return 1;
     }
 
-    // Initialize BCM Configuration to communicate with chip
-    ADS1299_init();
+    bool bootup_success = false;
+    int attempt = 1;
 
-    // bootup sequence
-    ADS1299_bootup();
-    
-    // Uncomment to test register access protection. Second _SDATAC should not have to be sent to do
-    // register test. If commented out. _SDATAC should be sent on the first _RREG call
-    // transferCmd(_SDATAC);
+    // Perform boot-up and test CONFIG registers for default values.
+    // Do up to 5 attempts before aborting.
+    do {
 
-    // Test registers' default values
-    ADS1299_test_registers(); 
+        // Initialize BCM Configuration to communicate with chip
+        ADS1299_init();
 
-    //test_convert_reading_to_voltage();
+        // bootup sequence
+        ADS1299_bootup();
+        
+        printf("\nAttempt #%d\n", attempt);
+
+        // Test registers' default values
+        bootup_success = ADS1299_test_registers();
+
+        if (bootup_success) {
+            printf("-- ADS1299 Boot-up Successful --");
+        } else {
+            printf("-- ADS1299 Boot-up Failed --");
+        }
+        attempt++;
+
+        // Delay 500 ms before moving on or reattempting bootup
+        bcm2835_delayMicroseconds(500);
+    } while (!bootup_success && (attempt <= 5));
+
+    if (!bootup_success) {
+        printf("Attempts 5 of 5 to boot ADS1299 unsuccessful. Aborting...\n");
+        return 1;
+    }
 
     return 0;
 }
