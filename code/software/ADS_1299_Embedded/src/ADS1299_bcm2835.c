@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <math.h>
+
 #include "ADS1299_definitions.h"
 #include "bcm2835.h"
 #include "ads1299.h"
@@ -61,8 +63,13 @@ void ADS1299_bootup(){
 	bcm2835_gpio_write(PIN_RESET,HIGH);
 	delay(100);
 
+	// Initialize some state variables
+
 	// ADS1299 boots up into RDATAC mode
 	ADS1299_current_data_mode = RDATAC_MODE;
+
+	// The default PGA gain on bootup is 24
+	ADS1299_pga_gain = 24;
 }
 
 /* Function: Read a single register of the ADS1299
@@ -103,10 +110,43 @@ void ADS1299_test_registers() {
 	// Read all control registers
 	uint8_t reg_id, reg_config1, reg_config2, reg_config3;
 
-	register_check(     ID, ID_DEFAULT,      &reg_id);
+	register_check(     ID,      ID_DEFAULT,      &reg_id);
 	register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
 	register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
 	register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
+}
+
+
+double convert_reading_to_voltage(int ads1299_reading, int gain) {
+	double full_scale, decoded_data, LSB;
+
+	// According to page 8 of the datasheet
+	full_scale = 2 * VREF / gain;
+
+	// Convert 24 bit two's complement to 32 bit two's complement
+	if ((ads1299_reading >> 23) & 0x1) {
+		ads1299_reading |= 0xFF000000; // Pad upper 8 bits with ones
+	} else {
+		ads1299_reading &= 0x00FFFFFF;
+	}
+
+	LSB = (full_scale / (pow(2, ADC_RES - 1)));
+
+	decoded_data = ads1299_reading * LSB;
+
+	#ifdef __DEBUG__
+		printf("full_scale = %.9g\nLSB = %.9g\nEncoded: 0x%x Decoded: %.9g\n\n", full_scale, LSB, ads1299_reading, decoded_data);
+	#endif
+
+	return decoded_data;
+}
+
+void test_convert_reading_to_voltage() {
+	int i;
+
+    for (i = -(pow(2,10)); i <= (pow(2,10)); i++) {
+        convert_reading_to_voltage(i, 24);
+    }
 }
 
 

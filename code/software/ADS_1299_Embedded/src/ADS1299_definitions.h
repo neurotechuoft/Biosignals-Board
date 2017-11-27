@@ -6,6 +6,7 @@
 // fclk = 2.048 Mhz, TCLK = 488.2815 nanoseconds	
 #define TCLK 		0.4882815 	// microseconds
 #define FCLK 		2.048
+#define ADC_RES		24
 #define __DEBUG__
 
 

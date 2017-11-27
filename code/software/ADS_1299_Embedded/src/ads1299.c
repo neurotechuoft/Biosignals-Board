@@ -15,6 +15,8 @@
 // Either RDATAC, SDATAC, or RDATAC.
 int ADS1299_current_data_mode;
 
+int ADS1299_pga_gain;
+
 //////////////////////////////////////////////
 
 // function call to set up all the communication between the raspberry pi bplus and the ADS1299 development board.
@@ -31,15 +33,15 @@ int initLibrary()
 	// Begin spi by initializing all the required pins
 	bcm2835_spi_begin();
 
-	// Set bit order
+	    // Set bit order
     	bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
     
     	// Set the spi mode - 4 modes
-	//	BCM2835_SPI_MODE1 = 1,  // CPOL = 0, CPHA = 1, Clock idle low, data is clocked in on falling edge, output data (change) on rising edge
+	    // BCM2835_SPI_MODE1 = 1,  // CPOL = 0, CPHA = 1, Clock idle low, data is clocked in on falling edge, output data (change) on rising edge
     	bcm2835_spi_setDataMode(BCM2835_SPI_MODE1);                   // The default
     
-	// Set SPI clock speed
-	//	BCM2835_SPI_CLOCK_DIVIDER_512   = 512,     ///< 512 = 2.048us = 488.28125kHz
+	    // Set SPI clock speed
+	    // BCM2835_SPI_CLOCK_DIVIDER_512   = 512,     ///< 512 = 2.048us = 488.28125kHz
     	bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_512); // The default
 
     	// Chip select
@@ -58,22 +60,22 @@ int initLibrary()
     	// Set the ss pin to be high by default
     	bcm2835_gpio_write(PIN_CS, HIGH);
 
-	// --- RESET THE ADS1299 --- //
-	// Issue the ss pulse
-	// bcm2835_gpio_write(PIN_CS, LOW);
+	    // --- RESET THE ADS1299 --- //
+	    // Issue the ss pulse
+	    // bcm2835_gpio_write(PIN_CS, LOW);
     	// wait for a minimum of 2*TCLK    
     	// bcm2835_delayMicroseconds(3*TCLK);
-	// Make ss go high again
-	// NOTE : Use the reset opcode (0x60) instead
+	    // Make ss go high again
+	    // NOTE : Use the reset opcode (0x60) instead
 
     	bcm2835_gpio_write(PIN_CS, LOW);
-	bcm2835_delayMicroseconds(1000);
+	    bcm2835_delayMicroseconds(1000);
 
-	// reset opcode sent
-	transferData(0x60);
+		// reset opcode sent
+		transferData(0x60);
     
     	// wait for min 18*TCLK for reset
-	bcm2835_delayMicroseconds(20*TCLK);
+		bcm2835_delayMicroseconds(20*TCLK);
 
 	return 0;
 }

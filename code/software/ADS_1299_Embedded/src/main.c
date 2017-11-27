@@ -2,13 +2,14 @@
 #include "ADS1299_definitions.h"
 #include "ADS1299_bcm2835.h"
 #include "ads1299.h"
+#include <math.h>
 
 int main(int argc, char **argv)
 {
     // If error in intializing bcm
     if (!bcm2835_init()) {
-	printf("Failed to init the Raspberry PI");
-	return 1;
+	  printf("Failed to init the Raspberry PI");
+	   return 1;
     }
 
     // Initialize BCM Configuration to communicate with chip
@@ -23,6 +24,8 @@ int main(int argc, char **argv)
 
     // Test registers' default values
     ADS1299_test_registers(); 
- 
+
+    //test_convert_reading_to_voltage();
+
     return 0;
 }
