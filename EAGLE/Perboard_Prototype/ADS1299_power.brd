@@ -1552,7 +1552,7 @@ design rules under a new name.</description>
 <element name="R10" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="" x="15.24" y="46.99" rot="MR0"/>
 <element name="R11" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="" x="13.97" y="78.74" rot="MR270"/>
 <element name="R12" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="22k" x="22.86" y="80.01" rot="MR0"/>
-<element name="R2" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="21k" x="22.86" y="52.07" rot="MR180"/>
+<element name="R2" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="22k" x="22.86" y="52.07" rot="MR180"/>
 <element name="R3" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="" x="11.43" y="54.61" rot="MR0"/>
 <element name="R4" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="" x="15.24" y="57.15" rot="MR0"/>
 <element name="R5" library="resistor" library_urn="urn:adsk.eagle:library:348" package="0204V" package3d_urn="urn:adsk.eagle:package:25948/1" value="" x="15.24" y="41.91" rot="MR0"/>
@@ -1617,8 +1617,7 @@ design rules under a new name.</description>
 <contactref element="U$1" pad="19"/>
 <wire x1="41.82" y1="62.65" x2="46.99" y2="85.09" width="0.1524" layer="16"/>
 <wire x1="46.99" y1="85.09" x2="46.99" y2="82.55" width="0.1524" layer="1"/>
-<wire x1="49.496959375" y1="82.55" x2="46.99" y2="82.55" width="0.1524" layer="1"/>
-<wire x1="49.53" y1="82.55" x2="67.31" y2="82.55" width="0.1524" layer="1"/>
+<wire x1="46.99" y1="82.55" x2="67.31" y2="82.55" width="0.1524" layer="1"/>
 <wire x1="40.32" y1="62.65" x2="39.37" y2="85.09" width="0.1524" layer="16"/>
 <wire x1="46.99" y1="82.55" x2="39.37" y2="82.55" width="0.1524" layer="1"/>
 <wire x1="39.37" y1="82.55" x2="39.37" y2="85.09" width="0.1524" layer="1"/>
@@ -1629,19 +1628,19 @@ design rules under a new name.</description>
 <wire x1="54.61" y1="31.75" x2="54.61" y2="29.21" width="0.1524" layer="16"/>
 <wire x1="42.32" y1="50.95" x2="49.53" y2="31.75" width="0.1524" layer="16"/>
 <via x="49.53" y="31.75" extent="1-16" drill="0.35"/>
-<wire x1="49.53" y1="31.75" x2="49.53" y2="34.29" width="0.1524" layer="1"/>
+<wire x1="49.53" y1="31.75" x2="46.99" y2="34.29" width="0" layer="19" extent="1-16"/>
+<wire x1="46.99" y1="34.29" x2="49.53" y2="34.29" width="0.1524" layer="1"/>
 <wire x1="49.53" y1="34.29" x2="54.61" y2="34.29" width="0.1524" layer="1"/>
 <wire x1="54.61" y1="34.29" x2="54.61" y2="31.75" width="0.1524" layer="1"/>
 <wire x1="41.82" y1="50.95" x2="46.99" y2="31.75" width="0.1524" layer="16"/>
 <via x="46.99" y="31.75" extent="1-16" drill="0.35"/>
 <wire x1="46.99" y1="31.75" x2="46.99" y2="34.29" width="0.1524" layer="1"/>
-<wire x1="46.99" y1="34.29" x2="49.53" y2="34.29" width="0.1524" layer="1"/>
 <wire x1="54.61" y1="29.21" x2="54.61" y2="26.67" width="0.1524" layer="16"/>
-<wire x1="49.53" y1="34.29" x2="49.53" y2="82.55" width="0.1524" layer="1"/>
-<wire x1="49.53" y1="82.55" x2="49.496959375" y2="82.55" width="0.1524" layer="1"/>
+<wire x1="46.99" y1="34.29" x2="46.99" y2="82.55" width="0.1524" layer="1"/>
+<wire x1="49.53" y1="34.29" x2="49.53" y2="31.75" width="0.1524" layer="1"/>
+<wire x1="46.99" y1="85.09" x2="46.99" y2="85.09" width="0" layer="19" extent="1-16"/>
 <wire x1="39.37" y1="85.09" x2="39.37" y2="85.09" width="0" layer="19" extent="1-16"/>
 <wire x1="34.29" y1="85.09" x2="34.29" y2="85.09" width="0" layer="19" extent="1-16"/>
-<wire x1="46.99" y1="85.09" x2="46.99" y2="85.09" width="0" layer="19" extent="1-16"/>
 <wire x1="54.61" y1="31.75" x2="54.61" y2="31.75" width="0" layer="19" extent="1-16"/>
 </signal>
 <signal name="+3V3">
