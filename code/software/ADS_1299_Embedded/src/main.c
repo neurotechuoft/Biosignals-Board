@@ -15,8 +15,8 @@ int main(int argc, char **argv)
     bool bootup_success = false;
     int attempt = 1;
 
-    // Initialize ADS1299
-    ADS1299_init();
+
+    //output_square_wave(PIN_PWDN, 10, 10);
 
     // Perform boot-up and test CONFIG registers for default values.
     // Do up to 5 attempts before aborting.
