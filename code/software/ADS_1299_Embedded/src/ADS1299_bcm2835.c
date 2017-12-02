@@ -122,6 +122,24 @@ bool ADS1299_test_registers() {
 	return result;
 }
 
+// Function pulses a pin _pin at _frequency (in Hz) for _test_duration seconds
+void output_square_wave(int _pin, double _frequency, double _test_duration) {
+    double test_wave_frequency = _frequency;
+    double test_wave_period_us = (1/test_wave_frequency) * 1000000;
+   
+    int elapsed_cycles;
+    int num_cycles_for_test = _test_duration * _frequency; 
+
+    for (elapsed_cycles = 0; elapsed_cycles < num_cycles_for_test; elapsed_cycles++) {
+	bcm2835_gpio_write(_pin, HIGH);
+	delayMicroseconds(test_wave_period_us);
+
+	bcm2835_gpio_write(_pin, LOW);
+	delayMicroseconds(test_wave_period_us);
+    }
+
+
+}
 
 double convert_reading_to_voltage(int ads1299_reading, int gain) {
 	double full_scale, decoded_data, LSB;
