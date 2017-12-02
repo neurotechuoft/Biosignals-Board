@@ -15,6 +15,9 @@ int main(int argc, char **argv)
     bool bootup_success = false;
     int attempt = 1;
 
+    // Initialize ADS1299
+    ADS1299_init();
+
     // Perform boot-up and test CONFIG registers for default values.
     // Do up to 5 attempts before aborting.
     do {
@@ -37,7 +40,7 @@ int main(int argc, char **argv)
         }
         attempt++;
 
-        // Delay 500 ms before moving on or reattempting bootup
+        // Delay 500 us before moving on or reattempting bootup
         bcm2835_delayMicroseconds(500);
     } while (!bootup_success && (attempt <= 5));
 
@@ -45,6 +48,5 @@ int main(int argc, char **argv)
         printf("\nAttempts 5 of 5 to boot ADS1299 unsuccessful. Aborting...\n");
         return 1;
     }
-
     return 0;
 }
