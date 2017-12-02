@@ -6,5 +6,6 @@ if [ -e bootup.log ]; then
 	rm -rf bootup.log
 fi;
 
-sudo ./bin/neuro | tee bootup.log | less
+sudo ./bin/neuro > bootup.log
 
+#vim bootup.log
