@@ -14,6 +14,7 @@
 #define PIN_DRDY  RPI_BPLUS_GPIO_J8_15 	// Make Pin 15 the DRDY pin
 #define PIN_CS    RPI_BPLUS_GPIO_J8_24  // Make Pin 24 (CE0) the CS pin
 #define PIN_RESET RPI_BPLUS_GPIO_J8_18  // Make Pin 18 the RESET pin
+#define PIN_PWDN RPI_BPLUS_GPIO_J8_22  // Make Pin 25 5h3 !PWDN pin
 
 // Settings spefific to our project
 #define SPS            250  // 250 samples per sample
