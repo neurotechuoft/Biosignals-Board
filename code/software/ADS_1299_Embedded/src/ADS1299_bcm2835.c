@@ -62,14 +62,18 @@ void ADS1299_init() {
 void ADS1299_bootup(){
 /* Function: Bootup Routine of the ADS1299
    Return: None */
+	
+	// Bring PWDN pin high to exit low-power standby mode. Delay 100 us
+	bcm2835_gpio_write(PIN_PWDN, HIGH);
+	delayMicroseconds(100);
 
-	//Set the pin to low and delay (TIME TO BE DECIDED BASED ON TESTING)
+	//Set the pin to low and delay for 2*TCLK us (tRST) as per datasheet
 	bcm2835_gpio_write(PIN_RESET, LOW);
-	delay(10);
+	delayMicroseconds(2*TCLK);
 
 	//set pin to high to reset and bootup; delay (TIME TO BE DECIDED DURING TESTING)
 	bcm2835_gpio_write(PIN_RESET,HIGH);
-	delay(100);
+	delayMicroseconds(100);
 
 	// Initialize some state variables
 
