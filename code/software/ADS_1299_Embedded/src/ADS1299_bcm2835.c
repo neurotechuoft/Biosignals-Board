@@ -99,7 +99,7 @@ bool register_check(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
 
 	*actual = ADS1299_read_register(reg_addr);
 
-	if (*actual && expected) {
+	if (*actual == expected) {
 		#ifdef __DEBUG__
 		printf("--PASSED--");
 		printf("\nRead: 0x%x  Expected: 0x%x\n", *actual, expected);
