@@ -12,6 +12,7 @@
 #include "bcm2835.h"
 #include "ads1299.h"
 #include "ADS1299_bcm2835.h"
+#include "zhash.h"
 
 void ADS1299_init() {
 
@@ -127,9 +128,35 @@ bool ADS1299_test_registers() {
 	// Exempt Device ID check from result
 	register_check(     ID,      ID_DEFAULT,      &reg_id);
 
+	/*Instantiate the HashMap*/
+	struct ZHashTable *hash_table;
+	hash_table = zcreate_hash_table();
+
 	result &= register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
 	result &= register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
 	result &= register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
+
+	/*Check and print the Config-Register values*/
+
+	if (zhash_exists(hash_table, "CONFIG1")) {
+		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
+	}
+	if (zhash_exists(hash_table, "CONFIG2")) {
+		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
+	}
+	if (zhash_exists(hash_table, "CONFIG3")) {
+		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
+	}
+
+	/*Hash Everything*/
+	zhash_set(hash_table, "CONFIG1", (void *)std::string to_string((int)*reg_config1));
+	zhash_set(hash_table, "CONFIG2", (void *)std::string to_string((int)*reg_config2));
+	zhash_set(hash_table, "CONFIG3", (void *)std::string to_string((int)*reg_config3));
+
+
+
+	/*Free Table */ //---> We need to move this to terminating function
+	zfree_hash_table(hash_table);
 
 	return result;
 }
