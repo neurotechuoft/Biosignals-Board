@@ -224,7 +224,7 @@
 // Note for unknown bits, set default to 1 so when ANDing in check, does not corrupt output.
 
 // ID is unknown
-#define ID_DEFAULT 			0xFE
+#define ID_DEFAULT 	        0x1E
 
 #define CONFIG1_DEFAULT		0x96	
 #define CONFIG2_DEFAULT		0xA0
