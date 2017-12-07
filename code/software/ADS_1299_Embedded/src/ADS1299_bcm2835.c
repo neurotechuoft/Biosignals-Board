@@ -143,21 +143,23 @@ bool ADS1299_test_registers() {
 	sprintf(reg_str[1], "%d", reg_config1);
 	sprintf(reg_str[2], "%d", reg_config2);
 	sprintf(reg_str[3], "%d", reg_config3);
-	zhash_set(hash_table, "ID", reg_str[0]);
-	zhash_set(hash_table, "CONFIG1", reg_str[1]);
-	zhash_set(hash_table, "CONFIG2", reg_str[2]);
-	zhash_set(hash_table, "CONFIG3", reg_str[3]);
+	zhash_set(hash_table, "ID", (void *)reg_str[0]);
+	zhash_set(hash_table, "CONFIG1", (void *)reg_str[1]);
+	zhash_set(hash_table, "CONFIG2", (void *)reg_str[2]);
+	zhash_set(hash_table, "CONFIG3", (void *)reg_str[3]);
 
 	/*Check and print the Config-Register values*/
-
+	if (zhash_exists(hash_table, "ID")) {
+		printf("The device ID is  %s\n", (char *) zhash_get(hash_table, "ID"));
+	}
 	if (zhash_exists(hash_table, "CONFIG1")) {
 		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
 	}
 	if (zhash_exists(hash_table, "CONFIG2")) {
-		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
+		printf("Value of Config_Register2 is  %s\n", (char *) zhash_get(hash_table, "CONFIG2"));
 	}
 	if (zhash_exists(hash_table, "CONFIG3")) {
-		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
+		printf("Value of Config_Register3 is  %s\n", (char *) zhash_get(hash_table, "CONFIG3"));
 	}
 
 
