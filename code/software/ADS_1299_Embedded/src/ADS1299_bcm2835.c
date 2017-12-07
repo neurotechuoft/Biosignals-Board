@@ -136,6 +136,18 @@ bool ADS1299_test_registers() {
 	result &= register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
 	result &= register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
 
+	
+	/*Hash Everything*/
+	char reg_str[4][128];
+	sprintf(reg_str[0], "%d", reg_id);
+	sprintf(reg_str[1], "%d", reg_config1);
+	sprintf(reg_str[2], "%d", reg_config2);
+	sprintf(reg_str[3], "%d", reg_config3);
+	zhash_set(hash_table, "ID", reg_str[0]);
+	zhash_set(hash_table, "CONFIG1", reg_str[1]);
+	zhash_set(hash_table, "CONFIG2", reg_str[2]);
+	zhash_set(hash_table, "CONFIG3", reg_str[3]);
+
 	/*Check and print the Config-Register values*/
 
 	if (zhash_exists(hash_table, "CONFIG1")) {
@@ -147,12 +159,6 @@ bool ADS1299_test_registers() {
 	if (zhash_exists(hash_table, "CONFIG3")) {
 		printf("Value of Config_Register1 is  %s\n", (char *) zhash_get(hash_table, "CONFIG1"));
 	}
-
-	/*Hash Everything*/
-	zhash_set(hash_table, "CONFIG1", (void *)std::string to_string((int)*reg_config1));
-	zhash_set(hash_table, "CONFIG2", (void *)std::string to_string((int)*reg_config2));
-	zhash_set(hash_table, "CONFIG3", (void *)std::string to_string((int)*reg_config3));
-
 
 
 	/*Free Table */ //---> We need to move this to terminating function
