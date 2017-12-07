@@ -138,15 +138,30 @@ bool ADS1299_test_registers() {
 
 	
 	/*Hash Everything*/
-	char reg_str[4][128];
-	sprintf(reg_str[0], "%d", reg_id);
-	sprintf(reg_str[1], "%d", reg_config1);
-	sprintf(reg_str[2], "%d", reg_config2);
-	sprintf(reg_str[3], "%d", reg_config3);
-	zhash_set(hash_table, "ID", (void *)reg_str[0]);
-	zhash_set(hash_table, "CONFIG1", (void *)reg_str[1]);
-	zhash_set(hash_table, "CONFIG2", (void *)reg_str[2]);
-	zhash_set(hash_table, "CONFIG3", (void *)reg_str[3]);
+	int length=snprintf(NULL,0,"%d",reg_id);
+	char *str= malloc(length+1);
+	snprintf(str,length+1,"%d",reg_id);
+	zhash_set(hash_table, "ID", (void *)str);
+	free(str);
+
+	length=snprintf(NULL,0,"%d",reg_config1);
+	str= malloc(length+1);
+	snprintf(str,length+1,"%d",reg_config1);
+	zhash_set(hash_table, "CONFIG1", (void *)str);
+	free(str);
+
+	length=snprintf(NULL,0,"%d",reg_config2);
+	str= malloc(length+1);
+	snprintf(str,length+1,"%d",reg_config2);
+	zhash_set(hash_table, "CONFIG2", (void *)str);
+	free(str);
+
+	length=snprintf(NULL,0,"%d",reg_config3);
+	str= malloc(length+1);
+	snprintf(str,length+1,"%d",reg_config3);
+	zhash_set(hash_table, "CONFIG3", (void *)str);
+	free(str);
+	/*End of Hash Block*/
 
 	/*Check and print the Config-Register values*/
 	if (zhash_exists(hash_table, "ID")) {
