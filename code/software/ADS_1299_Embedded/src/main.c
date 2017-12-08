@@ -15,11 +15,12 @@ int main(int argc, char **argv)
     bool bootup_success = false;
     int attempt = 1;
 
-
-    //output_square_wave(PIN_PWDN, 10, 10);
+    //ADS1299_init();
+    //output_square_wave(TEST_PIN_1, 10, 100);
 
     // Perform boot-up and test CONFIG registers for default values.
     // Do up to 5 attempts before aborting.
+    
     do {
 
         // Initialize BCM Configuration to communicate with chip
@@ -48,5 +49,6 @@ int main(int argc, char **argv)
         printf("\nAttempts 5 of 5 to boot ADS1299 unsuccessful. Aborting...\n");
         return 1;
     }
+
     return 0;
 }

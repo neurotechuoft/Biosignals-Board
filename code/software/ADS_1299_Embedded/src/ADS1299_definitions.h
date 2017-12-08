@@ -16,6 +16,11 @@
 #define PIN_RESET RPI_BPLUS_GPIO_J8_16  // Make Pin 16 the RESET pin
 #define PIN_PWDN RPI_BPLUS_GPIO_J8_22  // Make Pin 25 the !PWDN pin
 
+// Dedicated Test Pins
+#define TEST_PIN_1 RPI_BPLUS_GPIO_J8_03 // Dedicated test pin #1
+#define TEST_PIN_2 RPI_BPLUS_GPIO_J8_05 // Dedicated test pin #2
+#define TEST_PIN_3 RPI_BPLUS_GPIO_J8_07 // Dedicated test pin #3
+
 // Settings spefific to our project
 #define SPS            250  // 250 samples per sample
 #define VREF	       4.5  // 

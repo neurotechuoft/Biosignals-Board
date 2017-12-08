@@ -27,6 +27,11 @@ void ADS1299_init() {
 	// Set the pin to output
 	bcm2835_gpio_fsel(PIN_PWDN, BCM2835_GPIO_FSEL_OUTP);
 
+	// Configure test pins as outputs
+	bcm2835_gpio_fsel(TEST_PIN_1, BCM2835_GPIO_FSEL_OUTP);
+	bcm2835_gpio_fsel(TEST_PIN_2, BCM2835_GPIO_FSEL_OUTP);
+	bcm2835_gpio_fsel(TEST_PIN_3, BCM2835_GPIO_FSEL_OUTP);
+
 	// Configure BCM2835 SPI settings
 
 	// Begin spi by initializing all the required pins
