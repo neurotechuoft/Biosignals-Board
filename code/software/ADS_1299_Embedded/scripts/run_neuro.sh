@@ -1,7 +1,5 @@
 #!/bin/bash
 
-make
-
 LOG_DIR=$BSB_EMBEDDED/logs
 CREATE_DATE=$(date +"%Y_%m_%d_%I%M%S")
 LOG_NAME=bootup_$CREATE_DATE.log
