@@ -13,10 +13,19 @@ byte opcode;
 byte rec_byte;
 byte regs_defaults[5] = {0x1E, 0x96, 0xA0, 0x60, 0xFF};
 
-enum {WAKEUP, STANDBY, RESET, START, STOP, RDATAC, SDATAC, RDATA, RREG, WREG, NULL_STATE, NOT_WREG_RREG};
+enum ads1299_state {WAKEUP, STANDBY, RESET, START, STOP, RDATAC, SDATAC, RDATA, RREG, WREG, NULL_STATE, NOT_WREG_RREG};
 
 String current_state;
+
+// Pins
+int pin_pwdn = 7;
 int pin_reset = 8;
+
+int pin_cs = 10;
+int pin_mosi = 11;
+int pin_miso = 12;
+int pin_sclk = 13;
+
 
 void setup() {
   Serial.begin(115200);
@@ -24,6 +33,7 @@ void setup() {
   SPCR |= bit(SPE);
   pinMode(MISO, OUTPUT);
   pinMode(pin_reset, INPUT);
+  pinMode(pin_pwdn, OUTPUT);
 
   SPI.beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE1));
   
@@ -39,7 +49,8 @@ void setup() {
   n_regs = 0;
 
   current_state = "RDATAC";
-
+  delay(1000);
+  digitalWrite(pin_pwdn, HIGH);
 }
 
 void loop() {
@@ -79,7 +90,7 @@ ISR(SPI_STC_vect) {
       else if (opcode == 0x2)
         current_state = "RDATA";
       else 
-        current_state = NULL_STATE;
+        current_state = "NULL_STATE";
       process_it = true;
     } else if ((rec_byte >> 5) == 0x1) { // Is a RREG command
       read_reg = true;
