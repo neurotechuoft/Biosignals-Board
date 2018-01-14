@@ -1,0 +1,50 @@
+
+Attempt #1
+
+-- Testing address 0x0 --
+
+Warning - Attempted RREG or WREG while reading data. Sending SDATAC
+MOSI: 11 
+MISO: 00 
+Data mode set to 11
+
+MOSI: 20 
+MISO: 00 
+MOSI: 00 
+MISO: 00 
+MOSI: 00 
+MISO: 1e 
+--PASSED--
+Read: 0x1e  Expected: 0x1e
+
+-- Testing address 0x1 --
+MOSI: 21 
+MISO: 00 
+MOSI: 00 
+MISO: 00 
+MOSI: 00 
+MISO: 96 
+--PASSED--
+Read: 0x96  Expected: 0x96
+
+-- Testing address 0x2 --
+MOSI: 22 
+MISO: 00 
+MOSI: 00 
+MISO: 00 
+MOSI: 00 
+MISO: a0 
+--PASSED--
+Read: 0xa0  Expected: 0xa0
+
+-- Testing address 0x3 --
+MOSI: 23 
+MISO: 00 
+MOSI: 00 
+MISO: 00 
+MOSI: 00 
+MISO: 60 
+--PASSED--
+Read: 0x60  Expected: 0x60
+
+-- ADS1299 Boot-up Successful --
