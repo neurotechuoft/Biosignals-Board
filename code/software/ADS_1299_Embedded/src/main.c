@@ -13,6 +13,7 @@ int main(int argc, char **argv)
     }
 
     bool bootup_success = false;
+    int num_attempts = 1;
     int attempt = 1;
 
     //ADS1299_init();
@@ -43,11 +44,11 @@ int main(int argc, char **argv)
 
         // Delay 500 us before moving on or reattempting bootup
         bcm2835_delayMicroseconds(500);
-    } while (!bootup_success && (attempt <= 5));
+    } while (!bootup_success && (attempt <= num_attempts));
 
     if (!bootup_success) {
-        printf("\nAttempts 5 of 5 to boot ADS1299 unsuccessful. Aborting...\n");
-        return 1;
+        printf("\nAttempts %d of %d to boot ADS1299 unsuccessful. Aborting...\n", num_attempts, num_attempts);
+	return 1;
     }
 
     return 0;
