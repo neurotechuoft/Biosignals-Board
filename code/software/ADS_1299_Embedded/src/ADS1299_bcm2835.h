@@ -29,5 +29,6 @@ double convert_reading_to_voltage(int ads1299_reading, int gain);
 
 // Tests
 void test_convert_reading_to_voltage();
-
+void display_pin_state(int _pin);
+void display_all_pin_states();
 #endif

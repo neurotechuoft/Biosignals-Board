@@ -53,7 +53,8 @@ void ADS1299_init() {
     
     // Select the polarity
     // LOW or HIGH
-    bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, HIGH);
+    // TODO: Need to check this. ESE519 library had HIGH, but ADS1299 has an active low chip select!
+    bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);
 
     // Set the ss pin to output
     bcm2835_gpio_fsel(PIN_CS, BCM2835_GPIO_FSEL_OUTP);
@@ -61,7 +62,13 @@ void ADS1299_init() {
     // Initialize pins to default values
     bcm2835_gpio_write(PIN_RESET, HIGH);
     bcm2835_gpio_write(PIN_PWDN,  LOW);
-    bcm2835_gpio_write(PIN_CS,    LOW);   
+    bcm2835_gpio_write(PIN_CS,    HIGH);   
+
+    #ifdef __DEBUG__
+    printf("After ADS1299 initialization\n");
+    display_all_pin_states();
+    printf("End of ADS1299_init()");
+    #endif
 }
 
 void ADS1299_bootup(){
@@ -76,9 +83,10 @@ void ADS1299_bootup(){
 	bcm2835_gpio_write(PIN_RESET, LOW);
 	delayMicroseconds(2*TCLK);
 
-	//set pin to high to reset and bootup; delay (TIME TO BE DECIDED DURING TESTING)
+	//set pin to high to reset and bootup; delay 16 TCLK after end of RESET pulse
+	//or 18 TCLK after start of RESET pulse, as per Power Up Sequence in datasheet (pg. 70)
 	bcm2835_gpio_write(PIN_RESET,HIGH);
-	delayMicroseconds(100);
+	delayMicroseconds(18*TCLK);
 
 	// Initialize some state variables
 
@@ -190,6 +198,35 @@ void test_convert_reading_to_voltage() {
     }
 }
 
+void display_all_pin_states() {
+	printf("All Pin states:\n");
+	display_pin_state(PIN_DRDY);
+	display_pin_state(PIN_RESET);
+	display_pin_state(PIN_PWDN);
+	display_pin_state(PIN_MOSI);
+	display_pin_state(PIN_MISO);
+	display_pin_state(PIN_SCLK);
+	display_pin_state(PIN_CS);
+}
+
+void display_pin_state(int _pin) {
+	if (_pin == PIN_DRDY ) 
+		printf("\tPIN_DRDY 			 : %x\n", bcm2835_gpio_lev(PIN_DRDY));
+	else if (_pin == PIN_RESET) 
+		printf("\tPIN_RESET			 : %x\n", bcm2835_gpio_lev(PIN_RESET));
+	else if (_pin == PIN_PWDN)  
+		printf("\tPIN_PWDN 			 : %x\n", bcm2835_gpio_lev(PIN_PWDN));
+	else if (_pin == PIN_MOSI)  
+		printf("\tPIN_MOSI 			 : %x\n", bcm2835_gpio_lev(PIN_MOSI));
+	else if (_pin == PIN_MISO)  
+		printf("\tPIN_MISO 			 : %x\n", bcm2835_gpio_lev(PIN_MISO));
+	else if (_pin == PIN_SCLK) 
+	    	printf("\tPIN_SCLK 			 : %x\n", bcm2835_gpio_lev(PIN_SCLK));
+	else if (_pin == PIN_CS)    
+		printf("\tPIN_CS   			 : %x\n", bcm2835_gpio_lev(PIN_CS));
+	else    					
+		printf("\tRPI_BPLUS_GPIO_J8_%d : %x\n", _pin, bcm2835_gpio_lev(_pin));
+}
 
 
 
