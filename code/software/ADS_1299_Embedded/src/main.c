@@ -29,6 +29,9 @@ int main(int argc, char **argv)
 
         // bootup sequence
         ADS1299_bootup();
+	
+	// Send SDATAC before reading/writing registers
+	transferCmd(_SDATAC);
         
         printf("\nAttempt #%d\n", attempt);
 
@@ -40,8 +43,8 @@ int main(int argc, char **argv)
         } else {
             printf("\n-- ADS1299 Boot-up Failed --\n");
         }
-        attempt++;
 
+        attempt++;
         // Delay 500 us before moving on or reattempting bootup
         bcm2835_delayMicroseconds(500);
     } while (!bootup_success && (attempt <= num_attempts));
