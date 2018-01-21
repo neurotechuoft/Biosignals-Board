@@ -15,3 +15,5 @@ printf "\nOutput in $LOG_FILE\n\n"
 
 # Print bootup result (last line of log file)
 tail -1 $LOG_FILE
+
+vim $LOG_FILE
