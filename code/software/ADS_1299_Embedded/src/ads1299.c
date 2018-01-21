@@ -135,7 +135,13 @@ void transferCmd(uint8_t _cmd)
 	// Only do this if transfer was complete
 	if ((_cmd == _RDATAC) || (_cmd == _SDATAC) || (_cmd == _RDATA)) {
 		ADS1299_current_data_mode = _cmd;
-		printf("Data mode set to %x\n\n", ADS1299_current_data_mode);
+		if        (ADS1299_current_data_mode == _SDATAC) {
+			printf("Data mode set to SDATAC\n");
+		} else if (ADS1299_current_data_mode == _RDATAC) {
+			printf("Data mode set to RDATAC\n");
+		} else {
+			printf("Data mode set to RDATA\n");
+		}	
 	}
 
 }
