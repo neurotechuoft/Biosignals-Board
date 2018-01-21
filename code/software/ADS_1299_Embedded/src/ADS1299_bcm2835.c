@@ -51,23 +51,23 @@ void ADS1299_init() {
     // Chip select
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
     
-    // Select the polarity
-    // LOW or HIGH
-    // TODO: Need to check this. ESE519 library had HIGH, but ADS1299 has an active low chip select!
+    // Select the polarity LOW
+    // ADS1299 uses an active low chip select
     bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);
 
-    // Set the ss pin to output
-    bcm2835_gpio_fsel(PIN_CS, BCM2835_GPIO_FSEL_OUTP);
+    // Note: The chip select pin is controlled automatically if using the bcm2835_spi_transfer() function.
+    // Do not try writing to the pin or setting it as an OUTPUT!!
 
     // Initialize pins to default values
     bcm2835_gpio_write(PIN_RESET, HIGH);
     bcm2835_gpio_write(PIN_PWDN,  LOW);
-    bcm2835_gpio_write(PIN_CS,    HIGH);   
-
+    
+    // PIN_CS (chip select CE0) will be held HIGH when an SPI transfer is not in progress since we 
+    // set the chip select polarity to LOW.
     #ifdef __DEBUG__
-    printf("After ADS1299 initialization\n");
-    display_all_pin_states();
-    printf("End of ADS1299_init()");
+    //printf("After ADS1299 initialization\n");
+    //display_all_pin_states();
+    //printf("End of ADS1299_init()");
     #endif
 }
 
@@ -199,7 +199,7 @@ void test_convert_reading_to_voltage() {
 }
 
 void display_all_pin_states() {
-	printf("All Pin states:\n");
+	printf("\tAll Pin states:\n");
 	display_pin_state(PIN_DRDY);
 	display_pin_state(PIN_RESET);
 	display_pin_state(PIN_PWDN);
