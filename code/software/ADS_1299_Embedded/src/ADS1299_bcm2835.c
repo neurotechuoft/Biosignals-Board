@@ -65,9 +65,9 @@ void ADS1299_init() {
     // PIN_CS (chip select CE0) will be held HIGH when an SPI transfer is not in progress since we 
     // set the chip select polarity to LOW.
     #ifdef __DEBUG__
-    //printf("After ADS1299 initialization\n");
-    //display_all_pin_states();
-    //printf("End of ADS1299_init()");
+    printf("After ADS1299 initialization\n");
+    display_all_pin_states();
+    printf("End of ADS1299_init()\n");
     #endif
 }
 
@@ -97,12 +97,103 @@ void ADS1299_bootup(){
 	ADS1299_pga_gain = 24;
 }
 
+
+//////////////////////// Register interface functions //////////////////////
 /* Function: Read a single register of the ADS1299
    Return: The data read from the register */
 uint8_t ADS1299_read_register(uint8_t reg_addr) {
 
 	return rregTransferData(1, reg_addr, 0);
 }
+
+// Function: Read a field from a register.
+// Arguments:
+//	reg_addr     - The register base address
+//	fld_size   - The size of the field in number of bits
+//	fld_offset - The offset of the field from bit 0. Example if the LSB of the field is bit 3, field_offset is 3
+uint8_t ADS1299_read_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fld_offset) {
+	uint8_t rd_data, rd_fld_data;
+	uint8_t rd_msk;
+
+	// Read the register over the SPI interface
+	rd_data = ADS1299_read_register(reg_addr);
+
+	// Create read mask by making making all bottom <fld_size> bits of the mask equal to 1.
+	// For example:
+	//		field_size = 3
+	//		rd_msk 	   = 0b00000001 << 3 - 1
+	//				   = 0xb0001000 - 1
+	//				   = 0b00000111;
+	rd_msk = ((1 << fld_size) - 1);
+
+	// To get just the field data, discard bits lower than the field by shifting the LSB bit of the field
+	// into bit 0. Then AND with the rd_msk to zero out bits higher than the MSB of the field.
+	rd_fld_data = (rd_data >> fld_offset) & rd_msk;
+
+
+		#ifdef __DEBUG__
+	printf("\nADS1299_read_register_field - reg_addr: "BYTE_TO_BIN_PATTERN", fld_size: "BYTE_TO_BIN_PATTERN", fld_offset: "BYTE_TO_BIN_PATTERN", rd_data: "BYTE_TO_BIN_PATTERN"\n",
+			BYTE_TO_BIN(reg_addr),
+			BYTE_TO_BIN(fld_size),
+			BYTE_TO_BIN(fld_offset),
+			BYTE_TO_BIN(rd_data));
+	#endif
+
+	return rd_fld_data;
+}
+
+// Function: Write a single register of the ADS1299
+void ADS1299_write_register(uint8_t reg_addr, uint8_t reg_data) {
+	rregTransferData(0, reg_addr, reg_data);
+}
+
+// Function: Write a field of a register.
+// Arguments:
+//	reg_addr     - The register base address
+//	fld_size     - The size of the field in number of bits
+//	fld_offset   - The offset of the field from bit 0. Example if the LSB of the field is bit 3, field_offset is 3
+void ADS1299_write_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fld_offset, uint8_t fld_data) {
+	uint8_t wr_data, rd_data, msk_data;
+	uint8_t wr_msk;
+
+	// Create the write mask. This is to leave bits outside of the target field unmodified from the write.
+	// Example:
+	// 		Current register contents: 0b10101010
+	//      fld_size   : 3
+	//		fld_offset : 3
+	//		Field data : 0b010
+	// 
+	//		wr_mask = ~(((1 << 3) - 1) << 3)
+	//				= ~((0b00001000 - 1) << 3)
+	//				= ~(0b00000111 << 3)
+	//    			= ~(0b00111000)
+	//				= 0b11000111
+	wr_msk = ~(((1 << fld_size) - 1) << fld_offset);
+
+	// Read the register over the SPI interface
+	//rd_data = ADS1299_read_register(reg_addr);
+	rd_data = 0xAA;
+
+	// Zero out only the bits in the field
+	msk_data = rd_data & wr_msk;
+
+	// Do a logical OR to write the field data into the zeroed field. The other bits of the register are untouched.
+	wr_data = msk_data | (fld_data << fld_offset);
+
+	//ADS1299_write_register(reg_addr, wr_data);
+
+	#ifdef __DEBUG__
+	printf("\nADS1299_write_register_field - reg_addr: "BYTE_TO_BIN_PATTERN", fld_size: "BYTE_TO_BIN_PATTERN", fld_offset: "BYTE_TO_BIN_PATTERN", fld_data: "BYTE_TO_BIN_PATTERN", rd_data: "BYTE_TO_BIN_PATTERN", wr_data: "BYTE_TO_BIN_PATTERN"\n",
+			BYTE_TO_BIN(reg_addr),
+			BYTE_TO_BIN(fld_size),
+			BYTE_TO_BIN(fld_offset),
+			BYTE_TO_BIN(fld_data),
+			BYTE_TO_BIN(rd_data),
+			BYTE_TO_BIN(wr_data));
+	#endif
+
+}
+
 
 bool register_check(uint8_t reg_addr, uint8_t expected, uint8_t * actual) {
 
@@ -146,6 +237,8 @@ bool ADS1299_test_registers() {
 
 	return result;
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 // Function pulses a pin _pin at _frequency (in Hz) for _test_duration seconds
 void output_square_wave(int _pin, double _frequency, double _test_duration) {
@@ -231,3 +324,6 @@ void display_pin_state(int _pin) {
 
 
 
+
+
+ 	

@@ -17,12 +17,11 @@ int main(int argc, char **argv)
     int attempt = 1;
 
     //ADS1299_init();
-    //output_square_wave(TEST_PIN_1, 10, 100);
+    //output_square_wave(TEST_PIN_1, 10000, 100000);
 
     // Perform boot-up and test CONFIG registers for default values.
-    // Do up to 5 attempts before aborting.
     
-    do {
+    while (attempt <= num_attempts && !bootup_success) {
 
         // Initialize BCM Configuration to communicate with chip
         ADS1299_init();
@@ -30,8 +29,8 @@ int main(int argc, char **argv)
         // bootup sequence
         ADS1299_bootup();
 	
-	// Send SDATAC before reading/writing registers
-	transferCmd(_SDATAC);
+	   // Send SDATAC before reading/writing registers
+	   transferCmd(_SDATAC);
         
         printf("\nAttempt #%d\n", attempt);
 
@@ -47,11 +46,11 @@ int main(int argc, char **argv)
         attempt++;
         // Delay 500 us before moving on or reattempting bootup
         bcm2835_delayMicroseconds(500);
-    } while (!bootup_success && (attempt <= num_attempts));
+    } 
 
     if (!bootup_success) {
         printf("\nAttempts %d of %d to boot ADS1299 unsuccessful. Aborting...\n", num_attempts, num_attempts);
-	return 1;
+	   return 1;
     }
 
     return 0;

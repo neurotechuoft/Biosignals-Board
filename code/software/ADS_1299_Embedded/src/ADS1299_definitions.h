@@ -7,7 +7,19 @@
 #define TCLK 		0.4882815 	// microseconds
 #define FCLK 		2.048
 #define ADC_RES		24
+
 #define __DEBUG__
+
+#define BYTE_TO_BIN_PATTERN "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BIN(byte)  \
+  (byte & 0x80 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x02 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0') 
 
 
 // Control Pins

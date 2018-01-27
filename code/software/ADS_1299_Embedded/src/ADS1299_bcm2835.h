@@ -10,9 +10,13 @@ void ADS1299_init();
 
 void ADS1299_bootup();
 
-///////////// SPI Interface functions //////////////
+///////////// Register Interface functions //////////////
 
 uint8_t ADS1299_read_register(uint8_t reg_addr);
+uint8_t ADS1299_read_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fld_offset);
+void ADS1299_write_register(uint8_t reg_addr, uint8_t reg_data);
+void ADS1299_write_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fld_offset, uint8_t fld_data);
+
 
 /////////////// Testing functions //////////////////
 
@@ -23,7 +27,6 @@ void output_square_wave(int _pin, double _frequency, double _test_duration);
 
 /////////////// Other functions ///////////////////
 
-uint8_t ADS1299_read_register_field(uint8_t reg_data, uint8_t lsb_pos, uint8_t msb_pos);
 double convert_reading_to_voltage(int ads1299_reading, int gain);
 
 
