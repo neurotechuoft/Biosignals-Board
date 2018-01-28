@@ -21,6 +21,7 @@ void ADS1299_write_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fl
 /////////////// Testing functions //////////////////
 
 bool ADS1299_test_registers();
+bool ADS1299_test_registers_write();
 bool register_check(uint8_t reg_addr, uint8_t expected, uint8_t * actual);
 
 void output_square_wave(int _pin, double _frequency, double _test_duration);

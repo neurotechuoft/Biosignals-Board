@@ -31,11 +31,15 @@ int main(int argc, char **argv)
 	
 	   // Send SDATAC before reading/writing registers
 	   transferCmd(_SDATAC);
-        
+
+       
         printf("\nAttempt #%d\n", attempt);
 
         // Test registers' default values
         bootup_success = ADS1299_test_registers();
+
+	// Test register write/read
+	ADS1299_test_registers_write();
 
         if (bootup_success) {
             printf("\n-- ADS1299 Boot-up Successful --\n");

@@ -132,11 +132,13 @@ uint8_t ADS1299_read_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t 
 
 
 		#ifdef __DEBUG__
-	printf("\nADS1299_read_register_field - reg_addr: "BYTE_TO_BIN_PATTERN", fld_size: "BYTE_TO_BIN_PATTERN", fld_offset: "BYTE_TO_BIN_PATTERN", rd_data: "BYTE_TO_BIN_PATTERN"\n",
+	printf("\nADS1299_read_register_field - reg_addr: "BYTE_TO_BIN_PATTERN", fld_size: "BYTE_TO_BIN_PATTERN", fld_offset: "BYTE_TO_BIN_PATTERN", rd_data: "BYTE_TO_BIN_PATTERN", rd_fld_data: "BYTE_TO_BIN_PATTERN"\n",
 			BYTE_TO_BIN(reg_addr),
 			BYTE_TO_BIN(fld_size),
 			BYTE_TO_BIN(fld_offset),
-			BYTE_TO_BIN(rd_data));
+			BYTE_TO_BIN(rd_data),
+			BYTE_TO_BIN(rd_fld_data));
+				
 	#endif
 
 	return rd_fld_data;
@@ -227,6 +229,8 @@ bool ADS1299_test_registers() {
 	// Read all control registers
 	uint8_t reg_id, reg_config1, reg_config2, reg_config3;
 
+	printf("\n--- ADS1299 register defaults test ---\n");
+
 	// Exempt Device ID check from result
 	register_check(     ID,      ID_DEFAULT,      &reg_id);
 
@@ -236,8 +240,52 @@ bool ADS1299_test_registers() {
 
 	result &= register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
 
+	if (result)
+		printf("\n--- ADS1299 register defaults test PASSED ---\n");
+	else 
+		printf("\n--- ADS1299 register defaults test FAILED ---\n");
+	
 	return result;
 }
+
+bool ADS1299_test_registers_write() {
+	
+	uint8_t id_wr_data, config1_wr_data, config2_wr_data, config3_wr_data;
+	uint8_t id_rd_data, config1_rd_data, config2_rd_data, config3_rd_data;
+
+	bool result = true;
+
+	id_wr_data = 0x0;
+	config1_wr_data = 0x1;
+	config2_wr_data = 0x2;
+	config3_wr_data = 0x3;
+
+
+	printf("\n--- ADS1299 register bash test ---\n");
+
+	// Do not write to Device ID register
+	//ADS1299_write_register(ID, id_wr_data);
+	//result &= register_check(ID, id_wr_data, &id_rd_data);
+
+	ADS1299_write_register(CONFIG1, config1_wr_data);
+	result &= register_check(CONFIG1, config1_wr_data, &config1_rd_data);
+	
+	ADS1299_write_register(CONFIG2, config2_wr_data);
+	result &= register_check(CONFIG2, config2_wr_data, &config2_rd_data);
+	
+	ADS1299_write_register(CONFIG3, config3_wr_data);
+	result &= register_check(CONFIG3, config3_wr_data, &config3_rd_data);
+	
+	if (result)
+		printf("\n--- ADS1299 register write test PASSED ---\n");
+	else 
+		printf("\n--- ADS1299 register write test FAILED ---\n");
+				
+		
+	return result;
+}	
+		
+
 
 /////////////////////////////////////////////////////////////////////////////
 
