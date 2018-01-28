@@ -171,8 +171,7 @@ void ADS1299_write_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fl
 	wr_msk = ~(((1 << fld_size) - 1) << fld_offset);
 
 	// Read the register over the SPI interface
-	//rd_data = ADS1299_read_register(reg_addr);
-	rd_data = 0xAA;
+	rd_data = ADS1299_read_register(reg_addr);
 
 	// Zero out only the bits in the field
 	msk_data = rd_data & wr_msk;
@@ -180,7 +179,7 @@ void ADS1299_write_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fl
 	// Do a logical OR to write the field data into the zeroed field. The other bits of the register are untouched.
 	wr_data = msk_data | (fld_data << fld_offset);
 
-	//ADS1299_write_register(reg_addr, wr_data);
+	ADS1299_write_register(reg_addr, wr_data);
 
 	#ifdef __DEBUG__
 	printf("\nADS1299_write_register_field - reg_addr: "BYTE_TO_BIN_PATTERN", fld_size: "BYTE_TO_BIN_PATTERN", fld_offset: "BYTE_TO_BIN_PATTERN", fld_data: "BYTE_TO_BIN_PATTERN", rd_data: "BYTE_TO_BIN_PATTERN", wr_data: "BYTE_TO_BIN_PATTERN"\n",
@@ -232,7 +231,9 @@ bool ADS1299_test_registers() {
 	register_check(     ID,      ID_DEFAULT,      &reg_id);
 
 	result &= register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
+
 	result &= register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
+
 	result &= register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
 
 	return result;
