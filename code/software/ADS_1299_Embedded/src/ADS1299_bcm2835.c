@@ -97,6 +97,14 @@ void ADS1299_bootup(){
 	ADS1299_pga_gain = 24;
 }
 
+void ADS1299_config() {
+	// We are using an internal reference, so set PD_REFBUF to 1       
+	printf("\nSetting PD_REFBUF bit of CONFIG3 to 1 \n");
+	ADS1299_write_register_field(CONFIG3, 1, 7, 1);
+
+	// Arbritrary delay to wait for internal reference to settle
+        bcm2835_delayMicroseconds(500);
+}	
 
 //////////////////////// Register interface functions //////////////////////
 /* Function: Read a single register of the ADS1299
@@ -237,8 +245,9 @@ bool ADS1299_test_registers() {
 	result &= register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
 
 	result &= register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
-
-	result &= register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
+	
+	// FIXME: Might need to remove CONFIG3 from bootup test. We write to it before testing to enable the internal reference
+	register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
 
 	if (result)
 		printf("\n--- ADS1299 register defaults test PASSED ---\n");
@@ -273,8 +282,9 @@ bool ADS1299_test_registers_write() {
 	ADS1299_write_register(CONFIG2, config2_wr_data);
 	result &= register_check(CONFIG2, config2_wr_data, &config2_rd_data);
 	
-	ADS1299_write_register(CONFIG3, config3_wr_data);
-	result &= register_check(CONFIG3, config3_wr_data, &config3_rd_data);
+	// FIXME: Might need to remove CONFIG3 from test, do not want to clobber PD_REFBUF bit
+	//ADS1299_write_register(CONFIG3, config3_wr_data);
+	//result &= register_check(CONFIG3, config3_wr_data, &config3_rd_data);
 	
 	if (result)
 		printf("\n--- ADS1299 register write test PASSED ---\n");

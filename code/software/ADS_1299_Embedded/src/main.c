@@ -32,14 +32,13 @@ int main(int argc, char **argv)
 	   // Send SDATAC before reading/writing registers
 	   transferCmd(_SDATAC);
 
-       
+	// Write necessary registers/pins for our ADS1299 configuration	
+	ADS1299_config();
+	
         printf("\nAttempt #%d\n", attempt);
 
         // Test registers' default values
         bootup_success = ADS1299_test_registers();
-
-	// Test register write/read
-	ADS1299_test_registers_write();
 
         if (bootup_success) {
             printf("\n-- ADS1299 Boot-up Successful --\n");
@@ -50,6 +49,7 @@ int main(int argc, char **argv)
         attempt++;
         // Delay 500 us before moving on or reattempting bootup
         bcm2835_delayMicroseconds(500);
+
     } 
 
     if (!bootup_success) {
