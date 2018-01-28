@@ -4,7 +4,7 @@
 byte process_it;
 
 // Register Read/Write settings
-bool read_reg, write_reg, rw_done;
+bool read_reg, write_reg, rw_done, proc_wreg;
 byte base_addr;
 int rw_offset;
 int n_regs;
@@ -43,10 +43,12 @@ void setup() {
 
   read_reg = false;
   write_reg = false;
+  proc_wreg = false;
   rw_done = true;
   base_addr = 0x00;
   rw_offset = 0;
   n_regs = 0;
+
 
   current_state = "RDATAC";
   delay(1000);
@@ -104,20 +106,26 @@ ISR(SPI_STC_vect) {
     process_it = true;
   } else {                               // Previous byte was a RREG or WREG command
       if (rw_done) {                     // If read_reg or write_reg are true and rw_done is high, this means we have not shifted any data out yet
-        n_regs = rec_byte & 0x1F;
+        n_regs = rec_byte & 0x1F;        // Read in the number of registers to read (second byte in RREG/WREG command
         rw_done = false;
       } 
       if (read_reg) {
-        SPDR = regs_defaults[base_addr + rw_offset];
+        SPDR = regs_defaults[base_addr + rw_offset]; // Put register data on SPDR, so next SPI transfer from the master will shift out the data
         rw_offset++;
       } else if (write_reg) {
-        // Do nothing for now
-        rw_offset++;
+        if (proc_wreg) {                // proc_wreg will be false if we just shifted in the second byte of the WREG command.
+          regs_defaults[base_addr + rw_offset] = rec_byte;
+          rw_offset++;
+        } else {
+          proc_wreg = true;             // Only process SPDR from the Pi if data is REG_DATA
+        }
       }
+      
 
       if (rw_offset > n_regs) {          // Finished reading registers, reset all flags to defaults and set rw_done high
         read_reg = false;
         write_reg = false;
+        proc_wreg = false;
         rw_done = true;
         base_addr = 0x00;
         rw_offset = 0;  
