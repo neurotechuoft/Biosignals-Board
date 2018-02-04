@@ -28,7 +28,10 @@ void ADS1299_init() {
 	bcm2835_gpio_fsel(PIN_PWDN, BCM2835_GPIO_FSEL_OUTP);
 
 	// Configure test pins as outputs
-	bcm2835_gpio_fsel(TEST_PIN_1, BCM2835_GPIO_FSEL_OUTP);
+	
+	// FIXME: Uncomment this line. Currently commented out since TEST_PIN_1 (GPIO_J8_03) has been repurposed as PIN_RESET
+	//bcm2835_gpio_fsel(TEST_PIN_1, BCM2835_GPIO_FSEL_OUTP);
+
 	bcm2835_gpio_fsel(TEST_PIN_2, BCM2835_GPIO_FSEL_OUTP);
 	bcm2835_gpio_fsel(TEST_PIN_3, BCM2835_GPIO_FSEL_OUTP);
 
@@ -81,7 +84,7 @@ void ADS1299_bootup(){
 
 	//Set the pin to low and delay for 2*TCLK us (tRST) as per datasheet
 	bcm2835_gpio_write(PIN_RESET, LOW);
-	delayMicroseconds(2*TCLK);
+	delayMicroseconds(500);
 
 	//set pin to high to reset and bootup; delay 16 TCLK after end of RESET pulse
 	//or 18 TCLK after start of RESET pulse, as per Power Up Sequence in datasheet (pg. 70)
@@ -100,7 +103,7 @@ void ADS1299_bootup(){
 void ADS1299_config() {
 	// We are using an internal reference, so set PD_REFBUF to 1       
 	printf("\nSetting PD_REFBUF bit of CONFIG3 to 1 \n");
-	ADS1299_write_register_field(CONFIG3, 1, 7, 1);
+	ADS1299_write_register(CONFIG3, 0xE0);
 
 	// Arbritrary delay to wait for internal reference to settle
         bcm2835_delayMicroseconds(500);
