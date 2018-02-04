@@ -17,15 +17,14 @@ int main(int argc, char **argv)
     int attempt = 1;
 
     //ADS1299_init();
-    //output_square_wave(TEST_PIN_1, 10000, 100000);
 
     // Perform boot-up and test CONFIG registers for default values.
-    
     while (attempt <= num_attempts && !bootup_success) {
 
         // Initialize BCM Configuration to communicate with chip
         ADS1299_init();
-
+	
+	delayMicroseconds(100);
         // bootup sequence
         ADS1299_bootup();
 	
@@ -49,7 +48,7 @@ int main(int argc, char **argv)
         attempt++;
         // Delay 500 us before moving on or reattempting bootup
         bcm2835_delayMicroseconds(500);
-
+	
     } 
 
     if (!bootup_success) {
