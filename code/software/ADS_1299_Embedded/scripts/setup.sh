@@ -2,7 +2,7 @@
 
 CURR_DIR=`pwd`
 
-export BSB_HOME=`find $HOME/* -name "Biosignals-Board" | tail -1`
+export BSB_HOME=`find $HOME/* -name "Biosignals-Board" | head -1`
 
 cd $BSB_HOME
 
