@@ -24,20 +24,20 @@
 
 // Control Pins
 #define PIN_DRDY  RPI_BPLUS_GPIO_J8_15 	// Make Pin 15 the DRDY  pin  (purple cable)
-#define PIN_RESET RPI_BPLUS_GPIO_J8_16  // Make Pin 16 the RESET pin  (brown cable)
+#define PIN_RESET   RPI_BPLUS_GPIO_J8_03 // FIXME: Temporarily make GPIO Pin 3 the reset pin. Original: Make Pin 16 the RESET pin  (brown cable)
 #define PIN_PWDN  RPI_BPLUS_GPIO_J8_22  // Make Pin 22 the !PWDN pin  (red cable)
 
 // SPI pins (DO NOT CHANGE. These are defined in hardware!)
 #define PIN_MOSI  RPI_BPLUS_GPIO_J8_19  // Pin 19 is the MOSI pin (green cable)
 #define PIN_MISO  RPI_BPLUS_GPIO_J8_21  // Pin 21 is the MISO pin (blue cable)
 #define PIN_SCLK  RPI_BPLUS_GPIO_J8_23  // Pin 23 is the SCLK pin (white cable)
-#define PIN_CS    RPI_BPLUS_GPIO_J8_24  // Pin 24 (CE0) is the CS pin (yellow cable)
+#define PIN_CS    RPI_BPLUS_GPIO_J8_24  // Pin 24 (CE0) is the CS pin (yellow cable
 
 // Use GPIO pin 20 as DGND. Pin 20 is not a GPIO pin and is not defined in bcm2835.h
 #define PIN_DGND 20	// black cable
 
 // Dedicated Test Pins
-#define TEST_PIN_1 RPI_BPLUS_GPIO_J8_03 // Dedicated test pin #1
+//#define TEST_PIN_1 RPI_BPLUS_GPIO_J8_03 // FIXME: This definistion needs to be commented out to not conflict with the PIN_RESET redefine to GPIO_J8_03. Original: Dedicated test pin #1 
 #define TEST_PIN_2 RPI_BPLUS_GPIO_J8_05 // Dedicated test pin #2
 #define TEST_PIN_3 RPI_BPLUS_GPIO_J8_07 // Dedicated test pin #3
 
