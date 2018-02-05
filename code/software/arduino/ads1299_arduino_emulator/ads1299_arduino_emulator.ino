@@ -57,13 +57,6 @@ void setup() {
 
 void loop() {
   // Do nothing for now, ISR takes too long to interrupt Serial 
-//  if (process_it) {
-//      Serial.print("Current State: ");
-//      Serial.print(current_state);
-//      Serial.print("  Received command: ");
-//      Serial.println(rec_byte);
-//      process_it = false;
-//  }
 }
 
 // Depending on the command recieved from the Pi, send a known register value back to the Pi.
@@ -77,7 +70,7 @@ void loop() {
 //  RREG   = 0b001r_rrrr 0b000n_nnnn
 //  WREG   = 0b010r_rrrr 0b000n_nnnn
 //
-// TODO: Add support for WREG and System Commands: WAKEUP, STANDBY, RESET, START, STOP
+// TODO: Add support for System Commands: WAKEUP, STANDBY, RESET, START, STOP
 ISR(SPI_STC_vect) {
   rec_byte = SPDR;
 
