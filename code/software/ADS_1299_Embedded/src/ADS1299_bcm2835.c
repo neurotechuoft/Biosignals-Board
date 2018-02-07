@@ -109,6 +109,35 @@ void ADS1299_config() {
         bcm2835_delayMicroseconds(500);
 }	
 
+void ADS1299_power_down() {
+	printf("\n Powering down ADS1299...\n");
+	bcm2835_gpio_write(PIN_PWDN, LOW);
+
+	if (!bcm2835_gpio_lev(PIN_PWDN)) 
+		printf("\n ADS1299 Powered down\n");
+}
+
+void ADS1299_reboot() {
+	bool powered_on = false;
+
+	powered_on = bcm2835_gpio_lev(PIN_PWDN);
+
+	if (powered_on) {
+		printf("\n ADS1299 is powered on. Rebooting ...\n");
+
+		ADS1299_power_down();
+
+		bcm2835_delayMicroseconds(2 * 1000000); // Wait for 2 seconds before powering up again
+
+		ADS1299_init();
+		ADS1299_bootup();
+
+		printf("\n ADS1299 Reboot Finished\n");
+	} else {
+		printf("\n ADS1299 is already powered-down. Aborting reboot ...\n");
+	}
+}
+
 //////////////////////// Register interface functions //////////////////////
 /* Function: Read a single register of the ADS1299
    Return: The data read from the register */

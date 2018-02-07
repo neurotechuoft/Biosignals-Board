@@ -11,6 +11,10 @@ void ADS1299_init();
 void ADS1299_bootup();
 
 void ADS1299_config();
+
+void ADS1299_power_down();
+
+void ADS1299_reboot();
 ///////////// Register Interface functions //////////////
 
 uint8_t ADS1299_read_register(uint8_t reg_addr);
