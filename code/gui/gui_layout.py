@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
         self.widget.setObjectName("widget")
         self.widget_2.raise_()
         self.verticalLayout_2.addWidget(self.widget)
-        self.widget_3 = CustomWidget(self.frame_2)
+        self.widget_3 = CustomWidget2(self.frame_2)
         self.widget_3.setObjectName("widget_3")
         self.verticalLayout_2.addWidget(self.widget_3)
         self.gridLayout.addWidget(self.frame_2, 0, 0, 1, 1)
@@ -69,6 +69,7 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Close"))
 
 from plotter import CustomWidget
+from plotter2 import CustomWidget2
 
 if __name__ == "__main__":
     import sys
@@ -78,4 +79,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
