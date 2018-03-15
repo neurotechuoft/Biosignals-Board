@@ -3,7 +3,7 @@
 #include "ADS1299_bcm2835.h"
 #include "ads1299.h"
 #include <math.h>
-#include <unistd.h> 
+#include <unistd.h>
 #include <string.h>
 
 int main(int argc, char **argv)
@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     int opt;
     bool  do_bootup = true, do_test = false, dry_run = false, output_wave = false, power_down = false;
 
-    
+
     char* test_name = NULL;
     bool bootup_success = false;
     int num_attempts = 1;
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
     // Parse command line options
     // -b -> Perform bootup sequence: bcm2835_init() -> ADS1299_init() -> AS1299_bootup()
-    // -t -> Perform specific test 
+    // -t -> Perform specific test
     // -w -> Output wave on to one of the three test pins.
     // -r -> Repeat test if failed. Default number of repeats is 1
     // -d -> Running dry_run mode (not on Raspberry Pi)
@@ -44,22 +44,21 @@ int main(int argc, char **argv)
             break;
         case 'w':
             output_wave = true;
-
             // Do not bootup the chip
             do_bootup = false;
 
             output_test_pin_num = atoi(optarg);
             if (output_test_pin_num == 2)
                 test_pin = TEST_PIN_2;
-            else if (output_test_pin_num == 3) 
+            else if (output_test_pin_num == 3)
                 test_pin = TEST_PIN_3;
             else {
                 fprintf(stderr, "Error: Invalid test pin. Must be 2 or 3");
                 exit(EXIT_FAILURE);
-            } 
+            }
 
             printf("\ngetopt - received 'w'. test_pin = %d\n", output_test_pin_num);
-            
+
             break;
         case 't':
             do_test = true;
@@ -103,18 +102,18 @@ int main(int argc, char **argv)
 
                 // Initialize BCM Configuration to communicate with chip
                 ADS1299_init();
-        	
+
         	    delayMicroseconds(100);
-                
+
                 // bootup sequence
                 ADS1299_bootup();
             }
 
             // Tests:
-            // 
+            //
             //      register_test        - Bootup and read the 3 CONFIG registers and compare the read values against their default values
             //      sdatac_test          - Bootup and send sdatac command
-            //      pwrup_ref_buf_test   - Bootup and write to 0xE0 to CONFIG3 register to power up the reference buffer.     
+            //      pwrup_ref_buf_test   - Bootup and write to 0xE0 to CONFIG3 register to power up the reference buffer.
             //      power_cycle_test     - Do 5 cycles of bootup and power down
 
     	    if (do_test) {
@@ -124,11 +123,70 @@ int main(int argc, char **argv)
                     printf("\nError: ADS1299 is not bootup!!!\n");
                     return 1;
                 }
-                
-                if (!strcmp(test_name, "register_test")) { // Test registers' default values 
+
+                if (!strcmp(test_name, "register_test")) { // Test registers' default values
 
                     // Send SDATAC before reading/writing registers
                     transferCmd(_SDATAC);
+
+                    // Write PD_REFBUF = 1
+                    ADS1299_config();
+
+                    // Set data rate
+                    printf("Set data rate - start\n");
+                    ADS1299_write_register(CONFIG1, 0x96);
+                    ADS1299_write_register(CONFIG2, 0xC0);
+                    printf("Set data rate - done\n");
+
+                    // Set all channels to input short
+                    int i;
+
+                    printf("\nWrite all CHNSET to 0x01\n");
+                    for (i=0; i < NUM_CHANNELS; i++) {
+                        printf("Write CH%0dSET to 0x01 - Start", i);
+                        ADS1299_write_register(CH1SET+i, 0x01);
+                        printf("\nWrite CH%0dSET to 0x01 - End", i);
+                    }
+
+                    delayMicroseconds(50000);
+                    // Send START command
+                    printf("\nSending START commad\n");
+                    transferCmd(_START);
+
+                    // Put back in RDATAC
+                    printf("\nSending RDATAC commad\n");
+                    transferCmd(_RDATAC);
+
+
+                    // sET-UP TEST SGIANLS
+                    ADS1299_write_register(CONFIG2, 0xD0);
+                    for (i=0; i < NUM_CHANNELS; i++) {
+                        printf("Write CH%0dSET to 0x05 - Start", i);
+                        ADS1299_write_register(CH1SET+i, 0x05);
+                        printf("\nWrite CH%0dSET to 0x05 - End", i);
+                    }
+
+                    // Loop forever
+                    /*
+                    int recv_data = 0;
+                    while(1) {
+                        //if (!bcm2835_gpio_lev(PIN_DRDY)) { // conversion finished
+                            // Issue 216 = 24 + 8 * 24 SCLKS
+                            int j;
+                            for (j = 0; j < NUM_CHANNELS + 1; j++) {
+                                recv_data = transferData(0x00);
+
+                                printf("Packet %d, Recv Data %d\n", j, recv_data);
+
+                                // Delay 1/250 sec = 4 ms
+                                delayMicroseconds(4000);
+                            }
+                        //} else
+                    }
+                    */
+
+                    ///////////////////////////////////////////////
+
 
                     bootup_success = ADS1299_test_registers();
 
@@ -178,12 +236,24 @@ int main(int argc, char **argv)
                     }
 
                     printf("\n--- ADS1299 power cycle test Finished ---\n");
-                }
+                } else if (!strcmp(test_name, "data_test")) {
 
-                else {
+                    printf("\n--- ADS1299 data test Started ---\n");
+                    transferCmd(_START);
+                    delayMicroseconds(500);
+                    display_all_pin_states();
+                    printf("\n--- ADS1299 data test Finished ---\n");
+                } else if (!strcmp(test_name, "stop_test")) {
+
+                    printf("\n--- ADS1299 stop test Started ---\n");
+                    transferCmd(_STOP);
+                    delayMicroseconds(500);
+                    display_all_pin_states();
+                    printf("\n--- ADS1299 stop test Finished ---\n");
+                } else {
                     fprintf(stderr, "Test %s not found\n", test_name);
-                    exit(EXIT_FAILURE);                            
-                }   
+                    exit(EXIT_FAILURE);
+                }
             }
 
             attempt++;
@@ -196,13 +266,13 @@ int main(int argc, char **argv)
             }
 
             bcm2835_delayMicroseconds(200);
-        } 
+        }
 
         if (!bootup_success ) {
             printf("\nAttempts %d of %d to boot ADS1299 unsuccessful. Aborting...\n", num_attempts, num_attempts);
     	   return 1;
         }
-        
+
     }
 
     return 0;
