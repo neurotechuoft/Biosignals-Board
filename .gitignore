@@ -24,6 +24,7 @@ Meeting-Sean(Electrodes:Diagrams:Stores:More)/
 
 # Ignore `obj` dir
 */obj/*
+*.o
 
 #Ignore log files
-*/logs/*
+*.log
