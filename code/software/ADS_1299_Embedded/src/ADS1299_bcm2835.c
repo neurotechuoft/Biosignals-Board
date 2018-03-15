@@ -15,9 +15,11 @@
 
 void ADS1299_init() {
 
+    delayMicroseconds(50000);
+
 	// Configure ADS1299 - specific interface pins
 
-	// Set the pin_DRDY to be the input 
+	// Set the pin_DRDY to be the input
     bcm2835_gpio_fsel(PIN_DRDY, BCM2835_GPIO_FSEL_INPT);
 
 
@@ -28,8 +30,11 @@ void ADS1299_init() {
 	bcm2835_gpio_fsel(PIN_PWDN, BCM2835_GPIO_FSEL_OUTP);
 
 	// Configure test pins as outputs
-	bcm2835_gpio_fsel(TEST_PIN_1, BCM2835_GPIO_FSEL_OUTP);
-	bcm2835_gpio_fsel(TEST_PIN_2, BCM2835_GPIO_FSEL_OUTP);
+
+	// FIXME: Uncomment this line. Currently commented out since TEST_PIN_1 (GPIO_J8_03) has been repurposed as PIN_RESET
+	//bcm2835_gpio_fsel(TEST_PIN_1, BCM2835_GPIO_FSEL_OUTP);
+
+	//bcm2835_gpio_fsel(TEST_PIN_2, BCM2835_GPIO_FSEL_OUTP);
 	bcm2835_gpio_fsel(TEST_PIN_3, BCM2835_GPIO_FSEL_OUTP);
 
 	// Configure BCM2835 SPI settings
@@ -39,18 +44,18 @@ void ADS1299_init() {
 
 	// Set bit order
     bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);      // The default
-    
+
     // Set the spi mode - 4 modes
 	//	BCM2835_SPI_MODE1 = 1,  // CPOL = 0, CPHA = 1, Clock idle low, data is clocked in on falling edge, output data (change) on rising edge
     bcm2835_spi_setDataMode(BCM2835_SPI_MODE1);                   // The default
-    
+
 	//Set SPI clock speed
 	//	BCM2835_SPI_CLOCK_DIVIDER_512   = 512,     ///< 512 = 2.048us = 488.28125kHz
     bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_512); // The default
 
     // Chip select
     bcm2835_spi_chipSelect(BCM2835_SPI_CS0);
-    
+
     // Select the polarity LOW
     // ADS1299 uses an active low chip select
     bcm2835_spi_setChipSelectPolarity(BCM2835_SPI_CS0, LOW);
@@ -59,10 +64,16 @@ void ADS1299_init() {
     // Do not try writing to the pin or setting it as an OUTPUT!!
 
     // Initialize pins to default values
-    bcm2835_gpio_write(PIN_RESET, HIGH);
+
+    // FIXME: UNcomment
+
+    bcm2835_gpio_write(PIN_RESET, LOW);
     bcm2835_gpio_write(PIN_PWDN,  LOW);
-    
-    // PIN_CS (chip select CE0) will be held HIGH when an SPI transfer is not in progress since we 
+    delayMicroseconds(50000);
+
+    //bcm2835_gpio_write(PIN_DRDY,  LOW);
+
+    // PIN_CS (chip select CE0) will be held HIGH when an SPI transfer is not in progress since we
     // set the chip select polarity to LOW.
     #ifdef __DEBUG__
     printf("After ADS1299 initialization\n");
@@ -74,19 +85,25 @@ void ADS1299_init() {
 void ADS1299_bootup(){
 /* Function: Bootup Routine of the ADS1299
    Return: None */
-	
+
+
+    bcm2835_gpio_write(PIN_RESET, HIGH);
+
 	// Bring PWDN pin high to exit low-power standby mode. Delay 100 us
 	bcm2835_gpio_write(PIN_PWDN, HIGH);
-	delayMicroseconds(100);
+	delayMicroseconds(pow(2, 18)  * TCLK);
+
+	// Delay 2 seconds for VCAP1 >= 1.1 V
+	delayMicroseconds(2000000);
 
 	//Set the pin to low and delay for 2*TCLK us (tRST) as per datasheet
 	bcm2835_gpio_write(PIN_RESET, LOW);
-	delayMicroseconds(2*TCLK);
+	delayMicroseconds(2 * TCLK);
 
 	//set pin to high to reset and bootup; delay 16 TCLK after end of RESET pulse
 	//or 18 TCLK after start of RESET pulse, as per Power Up Sequence in datasheet (pg. 70)
 	bcm2835_gpio_write(PIN_RESET,HIGH);
-	delayMicroseconds(18*TCLK);
+	delayMicroseconds(16*TCLK);
 
 	// Initialize some state variables
 
@@ -95,16 +112,50 @@ void ADS1299_bootup(){
 
 	// The default PGA gain on bootup is 24
 	ADS1299_pga_gain = 24;
+
+    printf("After ADS1299 bootup\n");
+    display_all_pin_states();
+    printf("End of ADS1299_bootup()\n");
+
 }
 
 void ADS1299_config() {
-	// We are using an internal reference, so set PD_REFBUF to 1       
+	// We are using an internal reference, so set PD_REFBUF to 1
 	printf("\nSetting PD_REFBUF bit of CONFIG3 to 1 \n");
-	ADS1299_write_register_field(CONFIG3, 1, 7, 1);
+	ADS1299_write_register(CONFIG3, 0xE0);
 
 	// Arbritrary delay to wait for internal reference to settle
-        bcm2835_delayMicroseconds(500);
-}	
+    bcm2835_delayMicroseconds(500);
+}
+
+void ADS1299_power_down() {
+	printf("\n Powering down ADS1299...\n");
+	bcm2835_gpio_write(PIN_PWDN, LOW);
+    bcm2835_gpio_write(PIN_RESET, LOW);
+	if (!bcm2835_gpio_lev(PIN_PWDN))
+		printf("\n ADS1299 Powered down\n");
+}
+
+void ADS1299_reboot() {
+	bool powered_on = false;
+
+	powered_on = bcm2835_gpio_lev(PIN_PWDN);
+
+	if (powered_on) {
+		printf("\n ADS1299 is powered on. Rebooting ...\n");
+
+		ADS1299_power_down();
+
+		bcm2835_delayMicroseconds(2 * 1000000); // Wait for 2 seconds before powering up again
+
+		ADS1299_init();
+		ADS1299_bootup();
+
+		printf("\n ADS1299 Reboot Finished\n");
+	} else {
+		printf("\n ADS1299 is already powered-down. Aborting reboot ...\n");
+	}
+}
 
 //////////////////////// Register interface functions //////////////////////
 /* Function: Read a single register of the ADS1299
@@ -146,7 +197,7 @@ uint8_t ADS1299_read_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t 
 			BYTE_TO_BIN(fld_offset),
 			BYTE_TO_BIN(rd_data),
 			BYTE_TO_BIN(rd_fld_data));
-				
+
 	#endif
 
 	return rd_fld_data;
@@ -172,7 +223,7 @@ void ADS1299_write_register_field(uint8_t reg_addr, uint8_t fld_size, uint8_t fl
 	//      fld_size   : 3
 	//		fld_offset : 3
 	//		Field data : 0b010
-	// 
+	//
 	//		wr_mask = ~(((1 << 3) - 1) << 3)
 	//				= ~((0b00001000 - 1) << 3)
 	//				= ~(0b00000111 << 3)
@@ -245,20 +296,20 @@ bool ADS1299_test_registers() {
 	result &= register_check(CONFIG1, CONFIG1_DEFAULT, &reg_config1);
 
 	result &= register_check(CONFIG2, CONFIG2_DEFAULT, &reg_config2);
-	
+
 	// FIXME: Might need to remove CONFIG3 from bootup test. We write to it before testing to enable the internal reference
 	register_check(CONFIG3, CONFIG3_DEFAULT, &reg_config3);
 
 	if (result)
 		printf("\n--- ADS1299 register defaults test PASSED ---\n");
-	else 
+	else
 		printf("\n--- ADS1299 register defaults test FAILED ---\n");
-	
+
 	return result;
 }
 
 bool ADS1299_test_registers_write() {
-	
+
 	uint8_t id_wr_data, config1_wr_data, config2_wr_data, config3_wr_data;
 	uint8_t id_rd_data, config1_rd_data, config2_rd_data, config3_rd_data;
 
@@ -278,23 +329,23 @@ bool ADS1299_test_registers_write() {
 
 	ADS1299_write_register(CONFIG1, config1_wr_data);
 	result &= register_check(CONFIG1, config1_wr_data, &config1_rd_data);
-	
+
 	ADS1299_write_register(CONFIG2, config2_wr_data);
 	result &= register_check(CONFIG2, config2_wr_data, &config2_rd_data);
-	
+
 	// FIXME: Might need to remove CONFIG3 from test, do not want to clobber PD_REFBUF bit
 	//ADS1299_write_register(CONFIG3, config3_wr_data);
 	//result &= register_check(CONFIG3, config3_wr_data, &config3_rd_data);
-	
+
 	if (result)
 		printf("\n--- ADS1299 register write test PASSED ---\n");
-	else 
+	else
 		printf("\n--- ADS1299 register write test FAILED ---\n");
-				
-		
+
+
 	return result;
-}	
-		
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -303,9 +354,9 @@ bool ADS1299_test_registers_write() {
 void output_square_wave(int _pin, double _frequency, double _test_duration) {
     double test_wave_frequency = _frequency;
     double test_wave_period_us = (1/test_wave_frequency) * 1000000;
-   
+
     int elapsed_cycles;
-    int num_cycles_for_test = _test_duration * _frequency; 
+    int num_cycles_for_test = _test_duration * _frequency;
 
     for (elapsed_cycles = 0; elapsed_cycles < num_cycles_for_test; elapsed_cycles++) {
 	bcm2835_gpio_write(_pin, HIGH);
@@ -362,21 +413,21 @@ void display_all_pin_states() {
 }
 
 void display_pin_state(int _pin) {
-	if (_pin == PIN_DRDY ) 
+	if (_pin == PIN_DRDY )
 		printf("\tPIN_DRDY 			 : %x\n", bcm2835_gpio_lev(PIN_DRDY));
-	else if (_pin == PIN_RESET) 
+	else if (_pin == PIN_RESET)
 		printf("\tPIN_RESET			 : %x\n", bcm2835_gpio_lev(PIN_RESET));
-	else if (_pin == PIN_PWDN)  
+	else if (_pin == PIN_PWDN)
 		printf("\tPIN_PWDN 			 : %x\n", bcm2835_gpio_lev(PIN_PWDN));
-	else if (_pin == PIN_MOSI)  
+	else if (_pin == PIN_MOSI)
 		printf("\tPIN_MOSI 			 : %x\n", bcm2835_gpio_lev(PIN_MOSI));
-	else if (_pin == PIN_MISO)  
+	else if (_pin == PIN_MISO)
 		printf("\tPIN_MISO 			 : %x\n", bcm2835_gpio_lev(PIN_MISO));
-	else if (_pin == PIN_SCLK) 
+	else if (_pin == PIN_SCLK)
 	    	printf("\tPIN_SCLK 			 : %x\n", bcm2835_gpio_lev(PIN_SCLK));
-	else if (_pin == PIN_CS)    
+	else if (_pin == PIN_CS)
 		printf("\tPIN_CS   			 : %x\n", bcm2835_gpio_lev(PIN_CS));
-	else    					
+	else
 		printf("\tRPI_BPLUS_GPIO_J8_%d : %x\n", _pin, bcm2835_gpio_lev(_pin));
 }
 
@@ -385,4 +436,4 @@ void display_pin_state(int _pin) {
 
 
 
- 	
+

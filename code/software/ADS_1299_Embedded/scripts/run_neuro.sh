@@ -6,7 +6,7 @@ LOG_NAME=bootup_$CREATE_DATE.log
 LOG_FILE=$LOG_DIR/$LOG_NAME
 
 printf "\nRunning ./bin/neuro ...\n"
-sudo ./bin/neuro > $LOG_FILE
+sudo $BSB_EMBEDDED/bin/neuro "$@" > $LOG_FILE
 
 printf "Finished running ./bin/neuro\n"
 

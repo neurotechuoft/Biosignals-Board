@@ -18,3 +18,13 @@ Meeting-Sean(Electrodes:Diagrams:Stores:More)/
 # ODS Lock Files #
 ##################
 .~lock.*
+
+# Ignore `bin` dir
+*/bin/*
+
+# Ignore `obj` dir
+*/obj/*
+*.o
+
+#Ignore log files
+*.log

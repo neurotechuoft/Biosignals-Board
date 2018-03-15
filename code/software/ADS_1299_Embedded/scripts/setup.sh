@@ -12,6 +12,8 @@ export BSB_GUI="$BSB_HOME/code/gui"
 export BSB_DIG="$BSB_HOME/code/digital"
 export BSB_PCB="$BSB_HOME/EAGLE"
 
+alias run_neuro="sudo $BSB_EMBEDDED/bin/neuro"
+
 #printf "Biosignals-Board Embedded Setup Complete\n\n"
 
 cd $CURR_DIR
